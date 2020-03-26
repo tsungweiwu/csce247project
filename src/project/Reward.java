@@ -1,9 +1,9 @@
 
 public class Reward {
-	private User user;
+	private RegisteredUser user;
 	private int points;
 	
-	public Reward(User user) {
+	public Reward(RegisteredUser user) {
 		this.user = user;
 	}
 	

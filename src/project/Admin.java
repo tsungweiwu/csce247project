@@ -1,3 +1,4 @@
+package project;
 
 public class Admin extends User{
 	private String password;

@@ -1,3 +1,4 @@
+package project;
 /*
  * @author Juan Mariscal
  * Purpose: decorates User class

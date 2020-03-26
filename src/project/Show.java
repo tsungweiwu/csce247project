@@ -2,11 +2,12 @@ package project;
 
 import java.util.LinkedList;
 
-public class Show extends Event{
+public abstract class Show extends Event{
 	private String title;
 	private Genre genre;
 	private String description;
 	private boolean explicit;
+	protected int points;
 	private LinkedList<Review> reviews;
 	
 	/**
@@ -48,6 +49,10 @@ public class Show extends Event{
 		
 		return sum/total;
 		
+	}
+	
+	public int getPoints() {
+		return this.points;
 	}
 	
 	public String toString() {
