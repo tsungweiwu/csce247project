@@ -1,5 +1,3 @@
-package project;
-
 import java.util.LinkedList;
 
 /**
@@ -7,7 +5,7 @@ import java.util.LinkedList;
  */
 
 public class Event {
-	private Venue venue;
+	private Theaters theater;
 	private String date;
 	private String title;
 	private Genre genre;
@@ -26,8 +24,8 @@ public class Event {
 	 * @param description
 	 * @param explicit
 	 */
-	public Event(Venue venue, String date, String title, Genre genre, String description, boolean explicit, Type type, double price) {
-		this.setVenue(venue);
+	public Event(Theaters theater, String date, String title, Genre genre, String description, boolean explicit, Type type, double price) {
+		this.setTheaters(theater);
 		this.setDate(date);
 		this.setTitle(title);
 		this.setGenre(genre);
@@ -64,15 +62,15 @@ public class Event {
 	/**
 	 * @return the venue
 	 */
-	public Venue getVenue() {
-		return venue;
+	public Theaters getTheater() {
+		return theater;
 	}
 
 	/**
 	 * @param venue the venue to set
 	 */
-	public void setVenue(Venue venue) {
-		this.venue = venue;
+	public void setTheaters(Theaters theater) {
+		this.theater = theater;
 	}
 
 	/**
@@ -190,12 +188,14 @@ public class Event {
 	public void addReview(Review review) {
 		reviews.add(review);
 	}
-
+	public Venue getVenue() {
+		return theater.getVenue();
+	}
 	/**
 	 * 
 	 */
 	public String toString() {
-		return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: /t" + this.date + "\nVenue: /t" + this.venue + "\nTitle: \t" + this.title + "\nGenre: \t"
+		return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: /t" + this.date + "\nVenue: /t" + this.theater.getVenue() + "\nTitle: \t" + this.title + "\nGenre: \t"
 				+ this.genre + "\nDescription: \t" + this.description + "Explicit: \t" + (this.explicit ? "Yes" : "No")
 				+ "\nRatings: \t" + this.getRating();
 	}
