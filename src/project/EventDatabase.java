@@ -27,8 +27,8 @@ public class EventDatabase {
 	}
 	
 	
-	public void addEvent(Venue venue, String date, String title, Genre genre, String description, boolean explicit, Type type) {
-		events.add(new Event(venue, date, title, genre, description, explicit, type));
+	public void addEvent(Venue venue, String date, String title, Genre genre, String description, boolean explicit, Type type, double price) {
+		events.add(new Event(venue, date, title, genre, description, explicit, type, price));
 		DataWriter.saveEvent();
 	}
 	

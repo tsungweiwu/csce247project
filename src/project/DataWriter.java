@@ -98,6 +98,7 @@ public class DataWriter extends DataConstants {
 		eventDetails.put(DESCRIPTION, event.getDescription());
 		eventDetails.put(EXPLICIT, event.isExplicit());
 		eventDetails.put(TYPE, event.getType());
+		eventDetails.put(PRICE, event.getPrice());
 
 		return eventDetails;
 	}

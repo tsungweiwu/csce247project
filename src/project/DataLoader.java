@@ -76,8 +76,9 @@ public class DataLoader extends DataConstants {
 				String description = (String) eventJSON.get(DESCRIPTION);
 				boolean explicit = (boolean) eventJSON.get(EXPLICIT);
 				Type type = (Type) eventJSON.get(TYPE);
+				double price = (double) eventJSON.get(PRICE);
 
-				event.add(new Event(venue, date, title, genre, description, explicit, type));
+				event.add(new Event(venue, date, title, genre, description, explicit, type, price));
 			}
 
 			return event;

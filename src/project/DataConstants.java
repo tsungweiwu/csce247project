@@ -16,4 +16,5 @@ public abstract class DataConstants {
 	protected static final String DESCRIPTION = "description";
 	protected static final String EXPLICIT = "explicit";
 	protected static final String TYPE = "type";
+	protected static final String PRICE = "price";
 }

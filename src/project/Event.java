@@ -187,7 +187,7 @@ public class Event {
 	/**
 	 * @param review the reviews to set
 	 */
-	public void addReviews(Review review) {
+	public void addReview(Review review) {
 		reviews.add(review);
 	}
 
