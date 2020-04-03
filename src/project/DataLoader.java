@@ -69,7 +69,7 @@ public class DataLoader extends DataConstants {
 
 			for (int i = 0; i < eventsJSON.size(); i++) {
 				JSONObject eventJSON = (JSONObject) eventsJSON.get(i);
-				Venue venue = (Venue) eventJSON.get(VENUE);
+				Theaters theater = (Theaters) eventJSON.get(THEATER);
 				String date = (String) eventJSON.get(DATE);
 				String title = (String) eventJSON.get(TITLE);
 				Genre genre = (Genre) eventJSON.get(GENRE);
@@ -78,7 +78,7 @@ public class DataLoader extends DataConstants {
 				Type type = (Type) eventJSON.get(TYPE);
 				double price = (double) eventJSON.get(PRICE);
 
-				event.add(new Event(venue, date, title, genre, description, explicit, type, price));
+				event.add(new Event(theater, date, title, genre, description, explicit, type, price));
 			}
 
 			return event;

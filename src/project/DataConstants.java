@@ -9,6 +9,7 @@ public abstract class DataConstants {
 	protected static final String PASSWORD = "password";
 	protected static final String STATUS = "status";
 	
+	protected static final String THEATER = "theater";
 	protected static final String VENUE = "venue";
 	protected static final String DATE = "date";
 	protected static final String TITLE = "title";

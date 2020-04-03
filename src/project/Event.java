@@ -1,3 +1,5 @@
+package project;
+
 import java.util.LinkedList;
 
 /**
@@ -24,7 +26,8 @@ public class Event {
 	 * @param description
 	 * @param explicit
 	 */
-	public Event(Theaters theater, String date, String title, Genre genre, String description, boolean explicit, Type type, double price) {
+	public Event(Theaters theater, String date, String title, Genre genre, String description, boolean explicit,
+			Type type, double price) {
 		this.setTheaters(theater);
 		this.setDate(date);
 		this.setTitle(title);
@@ -142,7 +145,7 @@ public class Event {
 	public void setExplicit(boolean explicit) {
 		this.explicit = explicit;
 	}
-	
+
 	/**
 	 * @return the type
 	 */
@@ -156,7 +159,7 @@ public class Event {
 	public void setType(Type type) {
 		this.type = type;
 	}
-	
+
 	/**
 	 * @return the type
 	 */
@@ -168,7 +171,7 @@ public class Event {
 	 * @param type the type to set
 	 */
 	public void setPrice(double price) {
-		if(price >= 0) {
+		if (price >= 0) {
 			this.price = price;
 		} else {
 			price = 0.00;
@@ -188,21 +191,24 @@ public class Event {
 	public void addReview(Review review) {
 		reviews.add(review);
 	}
+
 	public Venue getVenue() {
 		return theater.getVenue();
 	}
+
 	/**
 	 * 
 	 */
 	public String toString() {
-		return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: /t" + this.date + "\nVenue: /t" + this.theater.getVenue() + "\nTitle: \t" + this.title + "\nGenre: \t"
-				+ this.genre + "\nDescription: \t" + this.description + "Explicit: \t" + (this.explicit ? "Yes" : "No")
+		return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: /t" + this.date + "\nVenue: /t"
+				+ this.theater.getVenue() + "\nTitle: \t" + this.title + "\nGenre: \t" + this.genre
+				+ "\nDescription: \t" + this.description + "Explicit: \t" + (this.explicit ? "Yes" : "No")
 				+ "\nRatings: \t" + this.getRating();
 	}
-	
+
 	public String ticketString() {
 		return "*********************************************************************"
-				
+
 				+ "\n*********************************************************************";
 	}
 }

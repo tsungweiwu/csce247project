@@ -1,3 +1,4 @@
+package project;
 
 public class Theaters {
 	private int room;
@@ -5,6 +6,7 @@ public class Theaters {
 	private int capacity;
 	private String[][] seats;
 	private Venue venue;
+
 	public Theaters(int room, boolean handicap, Venue venue) {
 		this.setRoom(room);
 		this.setHandicap(handicap);
@@ -82,10 +84,11 @@ public class Theaters {
 	public void setSeats(String[][] seats) {
 		this.seats = seats;
 	}
-	
+
 	public void setVenue(Venue venue) {
 		this.venue = venue;
 	}
+
 	public Venue getVenue() {
 		return this.venue;
 	}
