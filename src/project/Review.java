@@ -1,4 +1,3 @@
-package project;
 
 /**
  * Review Class
