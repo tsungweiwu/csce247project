@@ -91,7 +91,7 @@ public class DataWriter extends DataConstants {
 
 	public static JSONObject getEventJSON(Event event) {
 		JSONObject eventDetails = new JSONObject();
-		eventDetails.put(VENUE, event.getVenue());
+		eventDetails.put(THEATER, event.getTheater());
 		eventDetails.put(DATE, event.getDate());
 		eventDetails.put(TITLE, event.getTitle());
 		eventDetails.put(GENRE, event.getGenre());

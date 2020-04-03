@@ -1,13 +1,36 @@
 package project;
 
 import java.util.LinkedList;
+import java.util.ArrayList;
 
 public class EventDatabase implements Database<Event> {
 	private LinkedList<Event> eventList;
-
+	
+	private static EventDatabase eventDatabase = null;
+	private static ArrayList<Event> events = new ArrayList<Event>();
+	
 	public EventDatabase() {
 		eventList = new LinkedList<Event>();
+		events = DataLoader.loadEvent();
 	}
+	
+	public static EventDatabase getInstance() {
+		if(eventDatabase == null) {
+			eventDatabase = new EventDatabase();
+		}
+		return eventDatabase;
+	}
+	
+	public ArrayList<Event> getEvent() {
+		return events;
+	}
+	
+	
+	public void addEvent(Theaters theater, String date, String title, Genre genre, String description, boolean explicit, Type type, double price) {
+		events.add(new Event(theater, date, title, genre, description, explicit, type, price));
+		DataWriter.saveEvent();
+	}
+		
 
 	public void add(Event event) {
 		eventList.add(event);

@@ -7,6 +7,10 @@ public class Admin extends User {
 		super(username);
 		setPassword(password);
 	}
+	
+	public String getUsername() {
+		return super.getUsername();
+	}
 
 	public void setPassword(String password) {
 		this.password = password;
