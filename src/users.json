@@ -1,7 +1,7 @@
 [
 	{
-		"username": "test",
-		"password": "qwerty",
-		"status": "MILITARY"
+		"status": "EMPLOYEE",
+		"password": "password",
+		"username": "edison"
 	}
 ]

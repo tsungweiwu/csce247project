@@ -7,16 +7,17 @@ public class EventDatabase implements Database<Event> {
 	private LinkedList<Event> eventList;
 	
 	private static EventDatabase eventDatabase = null;
-	private static ArrayList<Event> events = new ArrayList<Event>();
+	private ArrayList<Event> events = new ArrayList<Event>();
 	
 	public EventDatabase() {
 		eventList = new LinkedList<Event>();
-		events = DataLoader.loadEvent();
+//		events = DataLoader.loadEvent();
 	}
 	
 	public static EventDatabase getInstance() {
 		if(eventDatabase == null) {
 			eventDatabase = new EventDatabase();
+			eventDatabase.setEvents(DataLoader.loadEvent());
 		}
 		return eventDatabase;
 	}
@@ -25,9 +26,17 @@ public class EventDatabase implements Database<Event> {
 		return events;
 	}
 	
+	public void setEvents(ArrayList<Event> events) {
+		this.events = events;
+	}
 	
 	public void addEvent(Theaters theater, String date, String title, Genre genre, String description, boolean explicit, Type type, double price) {
 		events.add(new Event(theater, date, title, genre, description, explicit, type, price));
+		DataWriter.saveEvent();
+	}
+	
+	public void addEvent(Event event) {
+		events.add(event);
 		DataWriter.saveEvent();
 	}
 		

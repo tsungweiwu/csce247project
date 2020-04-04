@@ -64,11 +64,7 @@ public class Theaters {
 	 * @param seats the seats to set
 	 */
 	public void setCapacity(int capacity) {
-		if (this.capacity > 25) {
-			this.capacity = capacity;
-		} else {
-			this.capacity = 25;
-		}
+		this.capacity = 100;
 	}
 
 	/**

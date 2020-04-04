@@ -106,7 +106,11 @@ public class Driver {
 	}
 
 	public void register() {
-//		UserDatabase userDB = UserDatabase.getInstance();
+		UserDatabase userDB = UserDatabase.getInstance();
+//		EventDatabase e = EventDatabase.getInstance();
+//		
+//		Event newEvent = new Event(new Theaters(4, true, new Venue("Location", "Name")), "Date", "Title", Genre.COMEDY, "any", true, Type.MOVIE, 10.0d);
+//		e.addEvent(newEvent);
 		scan.nextLine();
 		System.out.println("To register, enter username: ");
 		String username = scan.nextLine();
@@ -138,8 +142,8 @@ public class Driver {
 			break;
 		}
 		RegisteredUser user = new RegisteredUser(username, password, status);
-//		userDB.addUser(username, password, status);
-		users.add(user);
+		userDB.addUser(username, password, status);
+//		users.add(user);
 		currentUser = user;
 		System.out.println("Great! You're registered, and you are also signed in.");
 	}

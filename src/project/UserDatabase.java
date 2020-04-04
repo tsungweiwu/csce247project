@@ -6,13 +6,13 @@ import java.util.ArrayList;
 public class UserDatabase implements Database<User> {
 	private LinkedList<User> userList;
 	private static UserDatabase userDatabase = null;
-	private static ArrayList<RegisteredUser> users = new ArrayList<RegisteredUser>();
-	private static ArrayList<Admin> admin = new ArrayList<Admin>();
+	private ArrayList<RegisteredUser> users = new ArrayList<RegisteredUser>();
+	private ArrayList<Admin> admin = new ArrayList<Admin>();
 
 	public UserDatabase() {
 		userList = new LinkedList<User>();
-//		users = DataLoader.loadUsers();
-//		admin = DataLoader.loadAdmin();
+		users = DataLoader.loadUsers();
+		admin = DataLoader.loadAdmin();
 	}
 
 	public static UserDatabase getInstance() {
