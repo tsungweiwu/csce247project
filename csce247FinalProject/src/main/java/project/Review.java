@@ -1,46 +1,39 @@
 package project;
+
 /**
- * Review Class
+ * Review Class holds the reviews of an event
  */
-
 public class Review {
-	private int rating;
-	private String review;
 
-	public Review(int rating, String review) {
-		this.setRating(rating);
-		this.setReview(review);
-	}
+    private int rating;
+    private String review;
 
-	/**
-	 * 
-	 * @return
-	 */
-	public int getRating() {
-		return this.rating;
-	}
+    public Review(int rating, String review) {
+        this.setRating(rating);
+        this.setReview(review);
+    }
 
-	/**
-	 * @param rating the rating to set
-	 */
-	public void setRating(int rating) {
-		if (rating <= 5) {
-			this.rating = rating;
-		}
-	}
+    /**
+     * Getters
+     */
+    public int getRating() {
+        return this.rating;
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public String getReview() {
-		return this.review;
-	}
+    public String getReview() {
+        return this.review;
+    }
 
-	/**
-	 * @param review the review to set
-	 */
-	public void setReview(String review) {
-		this.review = review;
-	}
+    /**
+     * Setters
+     */
+    public void setRating(int rating) {
+        if (rating <= 5) {
+            this.rating = rating;
+        }
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
 }

@@ -3,212 +3,171 @@ package project;
 import java.util.LinkedList;
 
 /**
- * Event class
+ * Event class describes the information that an event holds
  */
 
 public class Event {
-	private Theaters theater;
-	private String date;
-	private String title;
-	private Genre genre;
-	private String description;
-	private boolean explicit;
-	private Type type;
-	private double price;
-	private LinkedList<Review> reviews;
 
-	/**
-	 * 
-	 * @param venue
-	 * @param date
-	 * @param title
-	 * @param genre
-	 * @param description
-	 * @param explicit
-	 */
-	public Event(Theaters theater, String date, String title, Genre genre, String description, boolean explicit,
-			Type type, double price) {
-		this.setTheaters(theater);
-		this.setDate(date);
-		this.setTitle(title);
-		this.setGenre(genre);
-		this.setDescription(description);
-		this.setExplicit(explicit);
-		this.setType(type);
-		this.setPrice(price);
-		this.reviews = new LinkedList<Review>();
-	}
+    private Theater theater;
+    private String date;
+    private String title;
+    private Genre genre;
+    private String description;
+    private boolean explicit;
+    private Type type;
+    private double price;
+    private LinkedList<Review> reviews;
 
-	/**
-	 * 
-	 */
-	public void viewReviews() {
-		System.out.println(reviews.toString());
-	}
+    /**
+     * @param theater
+     * @param date
+     * @param title
+     * @param genre
+     * @param description
+     * @param explicit
+     * @param type
+     * @param price
+     */
+    public Event(Theater theater, String date, String title, Genre genre, String description,
+        boolean explicit, Type type, double price) {
+        this.setTheater(theater);
+        this.setDate(date);
+        this.setTitle(title);
+        this.setGenre(genre);
+        this.setDescription(description);
+        this.setExplicit(explicit);
+        this.setType(type);
+        this.setPrice(price);
+        this.reviews = new LinkedList<Review>();
+    }
 
-	/**
-	 * 
-	 * @return
-	 */
-	public int getRating() {
-		int total = reviews.size();
-		int sum = 0;
+    /**
+     *
+     */
+    public void viewReviews() {
+        System.out.println(reviews.toString());
+    }
 
-		while (reviews.peek() != null) {
-			sum += reviews.pop().getRating();
-		}
+    /**
+     * @return
+     */
+    public double getRating() {
+        int total = reviews.size();
+        int sum = 0;
 
-		return sum / total;
+        while (reviews.peek() != null) {
+            sum += reviews.pop().getRating();
+        }
 
-	}
+        return ((double) sum / (double) total);
 
-	/**
-	 * @return the venue
-	 */
-	public Theaters getTheater() {
-		return theater;
-	}
+    }
 
-	/**
-	 * @param venue the venue to set
-	 */
-	public void setTheaters(Theaters theater) {
-		this.theater = theater;
-	}
+    /**
+     * Getters
+     */
+    public Theater getTheater() {
+        return theater;
+    }
 
-	/**
-	 * @return the date
-	 */
-	public String getDate() {
-		return date;
-	}
+    public String getDate() {
+        return date;
+    }
 
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(String date) {
-		this.date = date;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	/**
-	 * @return the title
-	 */
-	public String getTitle() {
-		return title;
-	}
+    public Genre getGenre() {
+        return genre;
+    }
 
-	/**
-	 * @param title the title to set
-	 */
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	/**
-	 * @return the genre
-	 */
-	public Genre getGenre() {
-		return genre;
-	}
+    public boolean isExplicit() {
+        return explicit;
+    }
 
-	/**
-	 * @param genre the genre to set
-	 */
-	public void setGenre(Genre genre) {
-		this.genre = genre;
-	}
+    public Type getType() {
+        return type;
+    }
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
+    public double getPrice() {
+        return price;
+    }
 
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public LinkedList<Review> getReviews() {
+        return reviews;
+    }
 
-	/**
-	 * @return the explicit
-	 */
-	public boolean isExplicit() {
-		return explicit;
-	}
+    public Venue getVenue() {
+        return theater.getVenue();
+    }
 
-	/**
-	 * @param explicit the explicit to set
-	 */
-	public void setExplicit(boolean explicit) {
-		this.explicit = explicit;
-	}
+    /**
+     * Setters
+     */
+    public void setTheater(Theater theater) {
+        this.theater = theater;
+    }
 
-	/**
-	 * @return the type
-	 */
-	public Type getType() {
-		return type;
-	}
+    public void setDate(String date) {
+        this.date = date;
+    }
 
-	/**
-	 * @param type the type to set
-	 */
-	public void setType(Type type) {
-		this.type = type;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	/**
-	 * @return the type
-	 */
-	public double getPrice() {
-		return price;
-	}
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
 
-	/**
-	 * @param type the type to set
-	 */
-	public void setPrice(double price) {
-		if (price >= 0) {
-			this.price = price;
-		} else {
-			price = 0.00;
-		}
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	/**
-	 * @return the reviews
-	 */
-	public LinkedList<Review> getReviews() {
-		return reviews;
-	}
+    public void setExplicit(boolean explicit) {
+        this.explicit = explicit;
+    }
 
-	/**
-	 * @param review the reviews to set
-	 */
-	public void addReview(Review review) {
-		reviews.add(review);
-	}
+    public void setType(Type type) {
+        this.type = type;
+    }
 
-	public Venue getVenue() {
-		return theater.getVenue();
-	}
+    public void setPrice(double price) {
+        if (price >= 0) {
+            this.price = price;
+        } else {
+            this.price = 10.00;
+        }
+    }
 
-	/**
-	 * 
-	 */
-	public String toString() {
-		return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: /t" + this.date + "\nVenue: /t"
-				+ this.theater.getVenue() + "\nTitle: \t" + this.title + "\nGenre: \t" + this.genre
-				+ "\nDescription: \t" + this.description + "Explicit: \t" + (this.explicit ? "Yes" : "No")
-				+ "\nRatings: \t" + this.getRating();
-	}
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
 
-	public String ticketString() {
-		return "*********************************************************************"
+    /**
+     * Prints out the menu for the display of events
+     */
+    public String toString() {
+        return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: \t"
+            + this.date + "\nTitle: \t" + this.title + "\nGenre: \t" + this.genre
+            + "\nDescription: \t" + this.description + "\nVenue: \t"
+            + this.theater.getVenue().getName() + ", " + this.theater.getVenue().getLocation()
+            + "\nExplicit: \t" + (this.explicit ? "Yes"
+            : "No")
+            + "\nRatings: \t" + this.getRating() + "\n";
+    }
 
-				+ "\n*********************************************************************";
-	}
+    /**
+     * Prints out the ticket to be exported into a text file
+     */
+    public String ticketString() {
+        return "*********************************************************************"
+
+            + "\n*********************************************************************";
+    }
 }

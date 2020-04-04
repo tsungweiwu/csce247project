@@ -1,144 +1,148 @@
 [
-	{
-		"theater": {
-			"room": 4,
-			"handicap": true,
-			"capacity": 100,
-			"seats": [
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				],
-				[
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O",
-					"O"
-				]
-			],
-			"venue": {
-				"location": "Location",
-				"name": "Name",
-				"theaters": []
-			}
-		},
-		"date": "Date",
-		"title": "Title",
-		"genre": "COMEDY",
-		"description": "any",
-		"explicit": true,
-		"type": "MOVIE",
-		"price": 10.0,
-		"reviews": []
-	}
+  {
+    "theater": {
+      "room": 4,
+      "handicap": true,
+      "capacity": 100,
+      "seats": [
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ],
+        [
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O",
+          "O"
+        ]
+      ],
+      "venue": {
+        "location": "Columbia",
+        "name": "AMC"
+      }
+    },
+    "date": "April 4, 2020 10:51 AM",
+    "title": "Avengers",
+    "genre": "COMEDY",
+    "description": "Most views movie, lorep ipsumlorep ipsumlorep ipsumlorep ipsumlorep ipsum",
+    "explicit": true,
+    "type": "MOVIE",
+    "price": 10.00,
+    "reviews": [
+      {
+        "rating": 4,
+        "review": "something"
+      }
+    ]
+  }
 ]
