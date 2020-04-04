@@ -1,9 +1,9 @@
 package project;
 
 public abstract class DataConstants {
-	protected static final String USER_FILE_NAME = "src/users.json";
-	protected static final String ADMIN_FILE_NAME = "src/admin.json";
-	protected static final String EVENT_FILE_NAME = "src/events.json";
+	protected static final String USER_FILE_NAME = "src/main/resources/users.json";
+	protected static final String ADMIN_FILE_NAME = "src/main/resources/admin.json";
+	protected static final String EVENT_FILE_NAME = "src/main/resources/events.json";
 	protected static final String USERS = "users";
 	protected static final String USERNAME = "username";
 	protected static final String PASSWORD = "password";

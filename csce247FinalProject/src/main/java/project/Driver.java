@@ -139,6 +139,7 @@ public class Driver {
 			status = Status.SENIOR;
 			break;
 		default:
+			status = Status.NONE;
 			break;
 		}
 		RegisteredUser user = new RegisteredUser(username, password, status);
