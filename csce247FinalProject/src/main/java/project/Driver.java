@@ -47,7 +47,10 @@ public class Driver {
         }
     }
 
-    public void printVenues() throws IOException {
+    public void selectAndView() throws IOException {
+        System.out.println("Do you want to purchase ticket(1) or view seats(2)? Enter a number");
+        int input = Integer.parseInt(bufferedReader.readLine());
+
         System.out.println("Please select a venue:");
         int count = 1;
         for (Venue venue : venues.getVenues()) {
@@ -56,10 +59,10 @@ public class Driver {
         }
         int option = Integer.parseInt(bufferedReader.readLine());
         selectedVenue = venues.getVenues().get(option - 1);
-        printAllEventsFromVenue(selectedVenue);
+        printAllEventsFromVenue(selectedVenue, input);
     }
 
-    private void printAllEventsFromVenue(Venue selectedVenue) throws IOException {
+    private void printAllEventsFromVenue(Venue selectedVenue, int input) throws IOException {
         int count = 1;
         for (Theater theater : selectedVenue.getTheaters()) {
             for (Event event : theater.getEvents()) {
@@ -71,41 +74,41 @@ public class Driver {
         }
         int option = Integer.parseInt(bufferedReader.readLine());
         count = 1;
+        outerLoop:
         for (Theater theater : selectedVenue.getTheaters()) {
             for (Event event : theater.getEvents()) {
                 if (count == option) {
                     selectedTheater = theater;
                     selectedEvent = event;
-                    break;
+                    break outerLoop;
                 }
                 count++;
             }
         }
-        //Todo: Now Menu for purchasing passing selected Venue/Theater/Event
-        purchaseTicket();
+
+        if (input == 1) {
+            purchaseTicket();
+        } else {
+            viewSeating();
+        }
     }
 
     public void options() {
-
         if (currentUser instanceof RegisteredUser) {
             System.out.println(
                 "\nUser: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
-                    + "\n2. View All Events" + "\n3. View All Venues"
-                    + "\n4. Purchase Ticket" + "\n5. View Seats" + "\n6. Write Review"
-                    + "\n7. Sign Out");
+                    + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket"
+                    + "\n4. Write Review" + "\n5. Sign Out");
         } else if (currentUser instanceof Admin) {
             System.out.println(
                 "\nAdmin: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
-                    + "\n2. View All Events" + "\n3. View All Venues"
-                    + "\n4. Purchase Ticket" + "\n5. View Seats" + "\n6. Add Admin"
-                    + "\n7. Add Event"
-                    + "\n8. Remove Event" + "\n9. Sign Out");
+                    + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Add Admin"
+                    + "\n5. Add Event" + "\n6. Remove Event" + "\n7. Sign Out");
         } else {
             System.out.println(
                 "\nMenu:" + " \n0. Quit" + "\n1. Search"
-                    + "\n2. View All Events" + "\n3. View All Venues"
-                    + "\n4. Purchase Ticket" + "\n5. View Seats" + "\n6. Register"
-                    + "\n7. Sign In");
+                    + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Register"
+                    + "\n5. Sign In");
         }
     }
 
@@ -117,22 +120,10 @@ public class Driver {
         } else if (option == 2) {
             viewAllEvents();
         } else if (option == 3) {
-            printVenues();
-        } else if (option == 4) {
-            System.out.println("Enter title of event: ");
-            String title = bufferedReader.readLine();
-            if (venues.getEvent(title) == null) {
-                System.out.println("Event does not exist or title was wrong");
-                return false;
-            }
-            purchaseTicket();
-        } else if (option == 5) {
-            System.out.println("Enter title of movie to view seats of");
-            String title = bufferedReader.readLine();
-            viewSeating();
+            selectAndView();
         } else {
             if (currentUser instanceof RegisteredUser) {
-                if (option == 6) {
+                if (option == 4) {
                     System.out.println("Enter title of event: ");
                     String title = bufferedReader.readLine();
                     System.out.println("Enter short review: ");
@@ -140,36 +131,35 @@ public class Driver {
                     System.out.println("Enter whole number rating from 1-5: ");
                     int rating = Integer.parseInt(bufferedReader.readLine());
                     writeReview(rating, review, title);
-                } else if (option == 7) {
+                } else if (option == 5) {
                     signOut();
                 } else {
                     return true;
                 }
             } else if (currentUser instanceof Admin) {
-                if (option == 6) {
+                if (option == 4) {
                     addAdmin();
-                } else if (option == 7) {
+                } else if (option == 5) {
                     addEvent();
-                } else if (option == 8) {
+                } else if (option == 6) {
                     System.out.println("Enter the title of event to remove");
                     String title = bufferedReader.readLine();
                     removeEvent(title);
-                } else if (option == 9) {
+                } else if (option == 7) {
                     signOut();
                 } else {
                     return true;
                 }
             } else {
-                if (option == 6) {
+                if (option == 4) {
                     register();
-                } else if (option == 7) {
+                } else if (option == 5) {
                     signIn();
                 } else {
                     return true;
                 }
             }
         }
-
         return false;
     }
 
@@ -200,6 +190,11 @@ public class Driver {
     public void register() throws IOException {
         System.out.println("To register, enter username: ");
         String username = bufferedReader.readLine();
+
+        if (users.isUser(username, users.getUsers())) {
+            System.out.println("Username is already taken");
+            return;
+        }
 
         System.out.println("Now set a password: ");
         String password = bufferedReader.readLine();
@@ -237,6 +232,11 @@ public class Driver {
     public void addAdmin() throws IOException {
         System.out.println("Enter username for admin: ");
         String username = bufferedReader.readLine();
+
+        if (users.isUser(username, users.getAdmins())) {
+            System.out.println("Username is already taken");
+            return;
+        }
 
         System.out.println("Now set a password: ");
         String password = bufferedReader.readLine();
@@ -486,33 +486,38 @@ public class Driver {
             .println("X means occupied, O means available\nChoose the column of the seat (A-J)");
         char line = bufferedReader.readLine().charAt(0);
 
-        int col;
+        int row;
         if (line == 'A') {
-            col = 0;
+            row = 0;
         } else if (line == 'B') {
-            col = 1;
+            row = 1;
         } else if (line == 'C') {
-            col = 2;
+            row = 2;
         } else if (line == 'D') {
-            col = 3;
+            row = 3;
         } else if (line == 'E') {
-            col = 4;
+            row = 4;
         } else if (line == 'F') {
-            col = 5;
+            row = 5;
         } else if (line == 'G') {
-            col = 6;
+            row = 6;
         } else if (line == 'H') {
-            col = 7;
+            row = 7;
         } else if (line == 'I') {
-            col = 8;
+            row = 8;
         } else if (line == 'J') {
-            col = 9;
+            row = 9;
         } else {
-            col = 0;
+            row = 0;
         }
 
         System.out.println("Choose the row of the seat (0-9)");
-        int row = Integer.parseInt(bufferedReader.readLine());
+        int col = Integer.parseInt(bufferedReader.readLine());
+
+        if (selectedEvent.getSeats()[row][col].equals("X")) {
+            System.out.println("BISH SEAT IS TAKEN\n");
+            return;
+        }
 
         System.out.println("Are you sure you want to buy a ticket for (Y/N): ");
         venues.printTicketFormat(selectedEvent);
@@ -520,12 +525,13 @@ public class Driver {
         if (ans.equals("N")) {
             return;
         }
-        venues.setSeats(row, col, selectedEvent);
+
+        selectedEvent.setSeats(row, col);
         venues.saveVenues();
-        orderTicket();
+        orderTicket(line, col);
     }
 
-    public void orderTicket() throws IOException {
+    public void orderTicket(char line, int col) throws IOException {
         System.out.println(
             "Great! Ticket purchased. Would you like: " + "\n1. Physical ticket"
                 + "\n2. Online ticket"
@@ -533,34 +539,38 @@ public class Driver {
         int option = Integer.parseInt(bufferedReader.readLine());
         switch (option) {
             case 1:
-                generatePhysicalTicket(selectedVenue, selectedTheater, selectedEvent);
+                generatePhysicalTicket(selectedVenue, selectedTheater, selectedEvent, line, col);
                 break;
             case 2:
-                generateOnlineTicket(selectedVenue, selectedTheater, selectedEvent);
+                generateOnlineTicket(selectedVenue, selectedTheater, selectedEvent, line, col);
                 break;
             case 3:
-                generatePhysicalTicket(selectedVenue, selectedTheater, selectedEvent);
-                generateOnlineTicket(selectedVenue, selectedTheater, selectedEvent);
+                generatePhysicalTicket(selectedVenue, selectedTheater, selectedEvent, line, col);
+                generateOnlineTicket(selectedVenue, selectedTheater, selectedEvent, line, col);
                 break;
         }
     }
 
-    public void generatePhysicalTicket(Venue venue, Theater theater, Event event) {
+    public void generatePhysicalTicket(Venue venue, Theater theater, Event event, char line,
+        int col) {
         try {
             PrintWriter file = new PrintWriter(event.getTitle() + "_ticket_receipt.txt", "UTF-8");
-            file.print(venues.printReceipt(venue, theater, event));
+            file.print(venues.printReceipt(venue, theater, event, line, col));
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void generateOnlineTicket(Venue venue, Theater theater, Event event) {
+    public void generateOnlineTicket(Venue venue, Theater theater, Event event, char line,
+        int col) {
         System.out.println(
             "Here is your online receipt. Reminder, receipts save automatically in history for registered users.");
-        System.out.println(venues.printReceipt(venue, theater, event));
+        System.out.println(venues.printReceipt(venue, theater, event, line, col));
         if (currentUser.getClass().equals(RegisteredUser.class)) {
-            ((RegisteredUser) currentUser).addTicket(venues.printReceipt(venue, theater, event));
+            ((RegisteredUser) currentUser)
+                .addTicket(venues.printReceipt(venue, theater, event, line, col));
+            users.saveUsers();
         }
 
     }

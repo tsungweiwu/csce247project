@@ -362,12 +362,13 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
         System.out.println(builder.toString());
     }
 
-    public String printReceipt(Venue venue, Theater theater, Event event) {
+    public String printReceipt(Venue venue, Theater theater, Event event, char line, int col) {
         StringBuilder builder = new StringBuilder();
         builder.append("*************************************************\n");
         builder.append("Venue Name: ").append(venue.getName()).append("\n");
         builder.append("Location: ").append(venue.getLocation()).append("\n");
-        builder.append("Room: ").append(theater.getRoom()).append("\n");
+        builder.append("Room: ").append(theater.getRoom()).append(" - Seat: ").append(line)
+            .append(col).append("\n");
         builder.append("Title: ").append(event.getTitle()).append("\n");
         builder.append("Date: ").append(event.getDate()).append("\n");
         builder.append("Price: $").append(event.getPrice()).append("\n");
@@ -388,16 +389,8 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
         }
     }
 
-    public void setSeats(int x, int y, Event e) {
-        for (Venue venue : getVenues()) {
-            for (Theater theater : venue.getTheaters()) {
-                for (Event event : theater.getEvents()) {
-                    if (event == e) {
-                        e.setSeats(x, y);
-                    }
-                }
-            }
-        }
+    public boolean isSeatTaken(int x, int y, Event e) {
+        return e.getSeats()[x][y].equals("X");
     }
 
     /**

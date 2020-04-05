@@ -125,7 +125,7 @@ public class Event {
     }
 
     public void setSeats(int x, int y) {
-        this.seats[y][x] = "X";
+        this.seats[x][y] = "X";
     }
 
 //    /**

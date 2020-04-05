@@ -170,6 +170,15 @@ public class UserDatabase extends DataManager implements Database<User> {
         return null;
     }
 
+    public boolean isUser(String username, HashSet<? extends User> hashSet) {
+        for (User user : hashSet) {
+            if (user.getUsername().equalsIgnoreCase(username)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Saves all the data into the JSON file
      */

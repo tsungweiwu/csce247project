@@ -15,6 +15,7 @@ public class RegisteredUser extends User {
         super(username);
         this.setStatus(status);
         this.setPassword(password);
+        this.tickets = new LinkedList<>();
     }
 
     /**

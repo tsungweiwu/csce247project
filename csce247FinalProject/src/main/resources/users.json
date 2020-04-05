@@ -1,7 +1,16 @@
 [
   {
+    "status": "STUDENT",
+    "password": "password",
+    "tickets": [],
+    "username": "edison"
+  },
+  {
     "status": "EMPLOYEE",
     "password": "user",
+    "tickets": [
+      "*************************************************\nVenue Name: AMC\nLocation: 112 Wayne St, Columbia, South Carolina\nRoom: 2 - Seat: C9\nTitle: The Joker\nDate: August 23, 2020 7:45 PM\nPrice: $14.25\n*************************************************\n"
+    ],
     "username": "user"
   }
 ]
