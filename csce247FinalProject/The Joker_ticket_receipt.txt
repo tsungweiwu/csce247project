@@ -1,8 +1,8 @@
 *************************************************
 Venue Name: AMC
 Location: 112 Wayn St, Columbia, South Carolina
-Room: 2 - Seat: A1
+Room: 2 - Seat: A0
 Title: The Joker
-Date: August 23, 2020 8:45 PM
+Date: August 23, 2020 7:45 PM
 Price: $12.11
 *************************************************

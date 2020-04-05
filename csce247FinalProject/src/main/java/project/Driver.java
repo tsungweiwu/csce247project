@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashSet;
+import java.util.LinkedList;
+import org.fusesource.jansi.AnsiConsole;
 import project.databases.ReviewDatabase;
 import project.databases.UserDatabase;
 import project.databases.VenueDatabase;
@@ -32,6 +34,9 @@ public class Driver {
     private int input = 0;
     public static final String ANSI_RESET = "\u001B[0m";
     public static final String ANSI_RED = "\u001B[31m";
+    public static final String ANSI_GREEN = "\u001B[32m";
+    public static final String ANSI_YELLOW = "\u001B[33m";
+    private LinkedList<Event> tempEvents = new LinkedList<>();
 
     public Driver() {
         currentUser = new User("default");
@@ -40,6 +45,7 @@ public class Driver {
     }
 
     public static void main(String[] args) throws IOException {
+        AnsiConsole.systemInstall();
         boolean quit = false;
         Driver d = new Driver();
         d.currentUser = new User("default");
@@ -110,13 +116,12 @@ public class Driver {
         } else {
             if (currentUser instanceof RegisteredUser) {
                 if (option == 4) {
-                    System.out.println("Enter title of event: ");
-                    String title = bufferedReader.readLine();
+                    setSelectedEvent();
                     System.out.println("Enter short review: ");
                     String review = bufferedReader.readLine();
                     System.out.println("Enter whole number rating from 1-5: ");
                     int rating = Integer.parseInt(bufferedReader.readLine());
-                    writeReview(rating, review, title);
+                    writeReview(rating, review, selectedEvent.getTitle());
                 } else if (option == 5) {
                     signOut();
                 } else {
@@ -183,9 +188,15 @@ public class Driver {
     }
 
     /**
+     * Selects the current venue to be used
+     *
      * @throws IOException
      */
     public void setSelectedVenue() throws IOException {
+        if (venues.getVenues().isEmpty()) {
+            System.out.println(ANSI_RED + "You need to Create a Venue First!" + ANSI_RESET);
+            return;
+        }
         System.out.println("Please select a venue:");
         count = 1;
         for (Venue venue : venues.getVenues()) {
@@ -197,9 +208,15 @@ public class Driver {
     }
 
     /**
+     * Selects the current Theater to be used
+     *
      * @throws IOException
      */
     public void setSelectedTheater() throws IOException {
+        if (selectedVenue.getTheaters().isEmpty()) {
+            System.out.println(ANSI_RED + "You need to Create a Theater First!" + ANSI_RESET);
+            return;
+        }
         System.out.println("Please select a theater:");
         count = 1;
         for (Theater theater : selectedVenue.getTheaters()) {
@@ -218,6 +235,52 @@ public class Driver {
             }
             count++;
         }
+    }
+
+    /**
+     * Selects the current Theater to be used
+     *
+     * @throws IOException
+     */
+    public void setSelectedEvent() throws IOException {
+        setSelectedVenue();
+        System.out.println("Please select an event:");
+        for (Theater theater : selectedVenue.getTheaters()) {
+            for (Event event : theater.getEvents()) {
+                printOnce(event);
+            }
+        }
+
+        count = 1;
+        for (Event event : tempEvents) {
+            System.out
+                .println(count + ". " + event.getTitle());
+            count++;
+        }
+        getInput();
+
+        count = 1;
+        for (Event event : tempEvents) {
+            if (count == input) {
+                selectedEvent = event;
+                break;
+            }
+            count++;
+        }
+    }
+
+    /**
+     * Avoids the duplication of events for writing reviews
+     *
+     * @param event
+     */
+    public void printOnce(Event event) {
+        for (Event temp : tempEvents) {
+            if (temp.getTitle().equals(event.getTitle())) {
+                return;
+            }
+        }
+        tempEvents.add(event);
     }
 
     /**
@@ -332,6 +395,11 @@ public class Driver {
         System.out.println("Admin created");
     }
 
+    /**
+     * Displays a menu to ask what type of information you want to add
+     *
+     * @throws IOException
+     */
     public void add() throws IOException {
         System.out.println(ANSI_RED +
             "WARNING: If you are adding a Theater or Event to a non existing Venue, you must first CREATE the Venue and or Theater before creating that Event"
@@ -352,6 +420,11 @@ public class Driver {
     }
 
 
+    /**
+     * Adds a new Venue into the list
+     *
+     * @throws IOException
+     */
     public void addVenue() throws IOException {
         System.out.println("Enter location of venue (Address, City, State)");
         String venueLoc = bufferedReader.readLine();
@@ -362,6 +435,11 @@ public class Driver {
         venues.saveVenues();
     }
 
+    /**
+     * Adds a new Theater into the list
+     *
+     * @throws IOException
+     */
     public void addTheater() throws IOException {
         setSelectedVenue();
 
@@ -480,10 +558,20 @@ public class Driver {
         venues.saveVenues();
     }
 
+    /**
+     * Inserts your input into a variable to be used
+     *
+     * @throws IOException
+     */
     public void getInput() throws IOException {
         input = Integer.parseInt(bufferedReader.readLine());
     }
 
+    /**
+     * Displays a menu to ask what type of information you want to remove
+     *
+     * @throws IOException
+     */
     private void remove() throws IOException {
         System.out
             .println("Do you want to remove a(n): Venue(1), Theater(2), Event(3)? Enter a Number");
@@ -500,6 +588,11 @@ public class Driver {
         }
     }
 
+    /**
+     * Removes a Venue from the list
+     *
+     * @throws IOException
+     */
     public void removeVenue() throws IOException {
         System.out.println("Choose which to delete:");
         setSelectedVenue();
@@ -532,6 +625,7 @@ public class Driver {
             selectedTheater.getEvents().remove(selectedEvent) ? "Event Removed Successfully"
                 : "Event Remove Failed");
         venues.saveVenues();
+
     }
 
     /**

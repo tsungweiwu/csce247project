@@ -87,6 +87,18 @@ public class Event {
         return seats;
     }
 
+    public int getAvailable() {
+        int count = 100;
+        for (int i = 0; i < this.seats.length; i++) {
+            for (int j = 0; j < this.seats[i].length; j++) {
+                if (this.seats[i][j].equals("X")) {
+                    count -= 1;
+                }
+            }
+        }
+        return count;
+    }
+
 
     /**
      * Setters
