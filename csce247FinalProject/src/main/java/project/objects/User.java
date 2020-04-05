@@ -1,4 +1,4 @@
-package project;
+package project.objects;
 
 /**
  * Default User class

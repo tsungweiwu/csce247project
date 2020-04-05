@@ -1,4 +1,4 @@
-package project;
+package project.objects;
 
 /**
  * Defines the type of User which determines the discount

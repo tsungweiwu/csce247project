@@ -1,8 +1,8 @@
-package project;
+package project.objects;
 
 /**
  * Defines the type of event
  */
 public enum Type {
-    MOVIE, CONCERT, PLAY
+    MOVIE, CONCERT, PLAY, NONE
 }

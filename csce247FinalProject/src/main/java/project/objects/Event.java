@@ -1,4 +1,4 @@
-package project;
+package project.objects;
 
 import java.util.LinkedList;
 
@@ -8,7 +8,6 @@ import java.util.LinkedList;
 
 public class Event {
 
-    private Theater theater;
     private String date;
     private String title;
     private Genre genre;
@@ -16,10 +15,9 @@ public class Event {
     private boolean explicit;
     private Type type;
     private double price;
-    private LinkedList<Review> reviews;
+    private String seats[][] = new String[10][10];
 
     /**
-     * @param theater
      * @param date
      * @param title
      * @param genre
@@ -28,9 +26,8 @@ public class Event {
      * @param type
      * @param price
      */
-    public Event(Theater theater, String date, String title, Genre genre, String description,
+    public Event(String date, String title, Genre genre, String description,
         boolean explicit, Type type, double price) {
-        this.setTheater(theater);
         this.setDate(date);
         this.setTitle(title);
         this.setGenre(genre);
@@ -38,37 +35,25 @@ public class Event {
         this.setExplicit(explicit);
         this.setType(type);
         this.setPrice(price);
-        this.reviews = new LinkedList<Review>();
+        this.initRoom();
     }
 
     /**
-     *
+     * Initializes the seating chart (Double Matrices)
      */
-    public void viewReviews() {
-        System.out.println(reviews.toString());
-    }
+    public void initRoom() {
+        this.seats = new String[10][10];
 
-    /**
-     * @return
-     */
-    public double getRating() {
-        int total = reviews.size();
-        int sum = 0;
-
-        while (reviews.peek() != null) {
-            sum += reviews.pop().getRating();
+        for (int i = 0; i < this.seats.length; i++) {
+            for (int j = 0; j < this.seats[i].length; j++) {
+                this.seats[i][j] = "O";
+            }
         }
-
-        return ((double) sum / (double) total);
-
     }
 
     /**
      * Getters
      */
-    public Theater getTheater() {
-        return theater;
-    }
 
     public String getDate() {
         return date;
@@ -98,20 +83,14 @@ public class Event {
         return price;
     }
 
-    public LinkedList<Review> getReviews() {
-        return reviews;
+    public String[][] getSeats() {
+        return seats;
     }
 
-    public Venue getVenue() {
-        return theater.getVenue();
-    }
 
     /**
      * Setters
      */
-    public void setTheater(Theater theater) {
-        this.theater = theater;
-    }
 
     public void setDate(String date) {
         this.date = date;
@@ -145,29 +124,38 @@ public class Event {
         }
     }
 
-    public void addReview(Review review) {
-        reviews.add(review);
+    public void setSeats(int x, int y) {
+        this.seats[y][x] = "X";
     }
 
-    /**
-     * Prints out the menu for the display of events
-     */
-    public String toString() {
-        return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: \t"
-            + this.date + "\nTitle: \t" + this.title + "\nGenre: \t" + this.genre
-            + "\nDescription: \t" + this.description + "\nVenue: \t"
-            + this.theater.getVenue().getName() + ", " + this.theater.getVenue().getLocation()
-            + "\nExplicit: \t" + (this.explicit ? "Yes"
-            : "No")
-            + "\nRatings: \t" + this.getRating() + "\n";
-    }
+//    /**
+//     * Prints out the menu for the display of events
+//     */
+//    public String toString() {
+//        return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: \t"
+//            + this.date + "\nTitle: \t" + this.title + "\nGenre: \t" + this.genre
+//            + "\nDescription: \t" + this.description + "\nVenue: \t"
+//            + "\nExplicit: \t" + (this.explicit ? "Yes"
+//            : "No")
+//            + "\nRatings: \t" + this.getRating() + "\n";
+//    }
 
-    /**
-     * Prints out the ticket to be exported into a text file
-     */
     public String ticketString() {
         return "*********************************************************************"
 
             + "\n*********************************************************************";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Event event = (Event) obj;
+        return event.getTitle().equalsIgnoreCase(getTitle()) &&
+            event.getGenre() == getGenre() && event.getType() == getType() &&
+            event.getDate().equalsIgnoreCase(getDate()) && event.getDescription()
+            .equalsIgnoreCase(getDescription())
+            && event.getPrice() == getPrice();
     }
 }

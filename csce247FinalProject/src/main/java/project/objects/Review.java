@@ -1,4 +1,4 @@
-package project;
+package project.objects;
 
 /**
  * Review Class holds the reviews of an event

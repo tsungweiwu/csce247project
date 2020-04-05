@@ -1,4 +1,4 @@
-package project;
+package project.objects;
 
 /**
  * Specific class that controls all administrative settings and still maintains user foundation

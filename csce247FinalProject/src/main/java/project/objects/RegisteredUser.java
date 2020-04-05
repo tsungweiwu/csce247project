@@ -1,4 +1,4 @@
-package project;
+package project.objects;
 
 import java.util.LinkedList;
 
