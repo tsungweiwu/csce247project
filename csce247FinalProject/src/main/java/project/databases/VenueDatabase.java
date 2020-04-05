@@ -1,5 +1,8 @@
 package project.databases;
 
+import com.diogonunes.jcdp.color.ColoredPrinter;
+import com.diogonunes.jcdp.color.api.Ansi.Attribute;
+import com.diogonunes.jcdp.color.api.Ansi.FColor;
 import com.google.gson.reflect.TypeToken;
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +24,12 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
 
     private ArrayList<Venue> venues = new ArrayList<>();
     private ReviewDatabase reviewDatabase;
+    private ColoredPrinter cpRed = new ColoredPrinter.Builder(1, false).foreground(FColor.RED)
+        .build();
+    private ColoredPrinter cpGreen = new ColoredPrinter.Builder(1, false).foreground(FColor.GREEN)
+        .build();
+    private ColoredPrinter cpYellow = new ColoredPrinter.Builder(1, false).foreground(FColor.YELLOW)
+        .build();
 
     public VenueDatabase(ReviewDatabase reviewDatabase) {
         this.reviewDatabase = reviewDatabase;
@@ -323,11 +332,21 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
         builder.append("Event Price: $").append(event.getPrice()).append("\n");
         builder.append("Event Type: ").append(event.getType().toString()).append("\n");
         builder.append("Event Rating: ")
-            .append(String.format("%.2f", reviewDatabase.findEventReview(event).getRating()))
-            .append("\n");
-        builder.append("\u001B[32mSeats Left: ").append(event.getAvailable())
-            .append("\n\n\u001B[0m");
-        System.out.println(builder.toString());
+            .append(String.format("%.2f", reviewDatabase.findEventReview(event).getRating()));
+        builder.append("\nSeats Left: ");
+        System.out.print(builder.toString());
+
+        builder = new StringBuilder();
+        builder.append(event.getAvailable());
+        if (event.getAvailable() >= 75) {
+            cpGreen.print(builder.toString());
+        } else if (event.getAvailable() < 75 && event.getAvailable() > 20) {
+            cpYellow.print(builder.toString());
+        } else {
+            cpRed.print(builder.toString());
+        }
+
+        System.out.println("\n");
     }
 
     /**

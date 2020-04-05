@@ -24,7 +24,8 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.8.6'
 
-    implementation 'org.fusesource.jansi:jansi:1.18'
+    implementation 'com.diogonunes:JCDP:4.0.1'
+
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:28.0-jre'

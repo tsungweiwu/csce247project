@@ -1,12 +1,15 @@
 package project;
 
+import com.diogonunes.jcdp.color.ColoredPrinter;
+import com.diogonunes.jcdp.color.api.Ansi.Attribute;
+import com.diogonunes.jcdp.color.api.Ansi.FColor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.LinkedList;
-import org.fusesource.jansi.AnsiConsole;
 import project.databases.ReviewDatabase;
 import project.databases.UserDatabase;
 import project.databases.VenueDatabase;
@@ -32,11 +35,18 @@ public class Driver {
     private BufferedReader bufferedReader;
     private int count = 0;
     private int input = 0;
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
     private LinkedList<Event> tempEvents = new LinkedList<>();
+    private ColoredPrinter cpWarn = new ColoredPrinter.Builder(1, false).foreground(FColor.YELLOW)
+        .build();
+    private ColoredPrinter cpInfo = new ColoredPrinter.Builder(1, false)
+        .foreground(FColor.CYAN)
+        .build();
+    private ColoredPrinter cpMenu = new ColoredPrinter.Builder(1, false)
+        .foreground(FColor.GREEN)
+        .build();
+    private ColoredPrinter cpError = new ColoredPrinter.Builder(1, false)
+        .foreground(FColor.RED)
+        .build();
 
     public Driver() {
         currentUser = new User("default");
@@ -45,11 +55,10 @@ public class Driver {
     }
 
     public static void main(String[] args) throws IOException {
-        AnsiConsole.systemInstall();
         boolean quit = false;
         Driver d = new Driver();
         d.currentUser = new User("default");
-        System.out.println("Welcome to Paradise Showtimes! \n");
+        System.out.println("Welcome to Paradise Showtimes!");
         while (!quit) {
             d.options();
             int option = Integer.parseInt(d.bufferedReader.readLine());
@@ -63,7 +72,7 @@ public class Driver {
      * @throws IOException
      */
     public void selectAndView() throws IOException {
-        System.out.println("Do you want to purchase ticket(1) or view seats(2)? Enter a number");
+        cpInfo.println("Do you want to purchase ticket(1) or view seats(2)? Enter a number");
         getInput();
 
         select();
@@ -79,21 +88,26 @@ public class Driver {
      * Option menu for the user to select
      */
     public void options() {
+        ColoredPrinter cpUnderline = new ColoredPrinter.Builder(1, false)
+            .attribute(Attribute.UNDERLINE)
+            .build();
+        ;
+        System.out.println();
         if (currentUser instanceof RegisteredUser) {
-            System.out.println(
-                "\nUser: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
-                    + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket"
-                    + "\n4. Write Review" + "\n5. Sign Out");
+            cpUnderline.print("User: " + currentUser.getUsername());
+            System.out.print("\n0. Quit" + "\n1. Search"
+                + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket"
+                + "\n4. Write Review" + "\n5. Sign Out\n");
         } else if (currentUser instanceof Admin) {
-            System.out.println(
-                "\nAdmin: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
-                    + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Add Admin"
-                    + "\n5. Add Data" + "\n6. Remove Data" + "\n7. Sign Out");
+            cpUnderline.print("Admin: " + currentUser.getUsername());
+            System.out.print("\n0. Quit" + "\n1. Search"
+                + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Add Admin"
+                + "\n5. Add Data" + "\n6. Remove Data" + "\n7. Sign Out\n");
         } else {
-            System.out.println(
-                "\nMenu:" + " \n0. Quit" + "\n1. Search"
-                    + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Register"
-                    + "\n5. Sign In");
+            cpUnderline.print("Menu:");
+            System.out.println(" \n0. Quit" + "\n1. Search"
+                + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Register"
+                + "\n5. Sign In");
         }
     }
 
@@ -117,9 +131,9 @@ public class Driver {
             if (currentUser instanceof RegisteredUser) {
                 if (option == 4) {
                     setSelectedEvent();
-                    System.out.println("Enter short review: ");
+                    cpInfo.println("Enter short review: ");
                     String review = bufferedReader.readLine();
-                    System.out.println("Enter whole number rating from 1-5: ");
+                    cpInfo.println("Enter whole number rating from 1-5: ");
                     int rating = Integer.parseInt(bufferedReader.readLine());
                     writeReview(rating, review, selectedEvent.getTitle());
                 } else if (option == 5) {
@@ -194,10 +208,10 @@ public class Driver {
      */
     public void setSelectedVenue() throws IOException {
         if (venues.getVenues().isEmpty()) {
-            System.out.println(ANSI_RED + "You need to Create a Venue First!" + ANSI_RESET);
+            cpWarn.println("You need to Create a Venue First!");
             return;
         }
-        System.out.println("Please select a venue:");
+        cpInfo.println("Please select a venue:");
         count = 1;
         for (Venue venue : venues.getVenues()) {
             System.out.println(count + ". " + venue.getName() + " - " + venue.getLocation());
@@ -214,10 +228,10 @@ public class Driver {
      */
     public void setSelectedTheater() throws IOException {
         if (selectedVenue.getTheaters().isEmpty()) {
-            System.out.println(ANSI_RED + "You need to Create a Theater First!" + ANSI_RESET);
+            cpWarn.println("You need to Create a Theater First!");
             return;
         }
-        System.out.println("Please select a theater:");
+        cpInfo.println("Please select a theater:");
         count = 1;
         for (Theater theater : selectedVenue.getTheaters()) {
             System.out
@@ -244,7 +258,7 @@ public class Driver {
      */
     public void setSelectedEvent() throws IOException {
         setSelectedVenue();
-        System.out.println("Please select an event:");
+        cpInfo.println("Please select an event:");
         for (Theater theater : selectedVenue.getTheaters()) {
             for (Event event : theater.getEvents()) {
                 printOnce(event);
@@ -292,19 +306,19 @@ public class Driver {
         HashSet<RegisteredUser> userList = users.getUsers();
         HashSet<Admin> adminList = users.getAdmins();
 
-        System.out.println("Enter username: ");
-        String username = bufferedReader.readLine();
-        System.out.println("Enter password: ");
-        String password = bufferedReader.readLine();
+        cpInfo.println("Enter username: ");
+        String username = bufferedReader.readLine().trim();
+        cpInfo.println("Enter password: ");
+        String password = bufferedReader.readLine().trim();
 
         if (users.login(username, password, adminList, Admin.class)) {
             currentUser = users.getUser(username, adminList);
-            System.out.println("Login successful as Admin");
+            cpInfo.println("Login successful as Admin");
         } else if (users.login(username, password, userList, RegisteredUser.class)) {
             currentUser = users.getUser(username, userList);
-            System.out.println("Login successful as User");
+            cpInfo.println("Login successful as User");
         } else {
-            System.out.println("Invalid username/password");
+            cpError.println("Invalid username/password");
         }
     }
 
@@ -321,18 +335,18 @@ public class Driver {
      * @throws IOException
      */
     public void register() throws IOException {
-        System.out.println("To register, enter username: ");
-        String username = bufferedReader.readLine();
+        cpInfo.println("To register, enter username: ");
+        String username = bufferedReader.readLine().trim();
 
         if (users.isUser(username, users.getUsers())) {
-            System.out.println("Username is already taken");
+            cpError.println("Username is already taken");
             return;
         }
 
-        System.out.println("Now set a password: ");
-        String password = bufferedReader.readLine();
+        cpInfo.println("Now set a password: ");
+        String password = bufferedReader.readLine().trim();
 
-        System.out.println("Enter the number corresponding to your status: "
+        cpInfo.println("Enter the number corresponding to your status: "
             + "\n1. Military\n2. Employee\n3. Teacher\n4. Student\n5. Senior\n6. None");
         int stat = Integer.parseInt(bufferedReader.readLine());
         Status status = null;
@@ -359,7 +373,8 @@ public class Driver {
         RegisteredUser user = new RegisteredUser(username, password, status);
         users.add(user);
         currentUser = user;
-        System.out.println("Great! You're registered, and you are also signed in.");
+
+        cpInfo.println("Great! You're registered, and you are also signed in.");
     }
 
     /**
@@ -379,20 +394,20 @@ public class Driver {
      * @throws IOException
      */
     public void addAdmin() throws IOException {
-        System.out.println("Enter username for admin: ");
+        cpInfo.println("Enter username for admin: ");
         String username = bufferedReader.readLine();
 
         if (users.isUser(username, users.getAdmins())) {
-            System.out.println("Username is already taken");
+            cpError.println("Username is already taken");
             return;
         }
 
-        System.out.println("Now set a password: ");
+        cpInfo.println("Now set a password: ");
         String password = bufferedReader.readLine();
 
         Admin admin = new Admin(username, password);
         users.add(admin);
-        System.out.println("Admin created");
+        cpInfo.println("Admin created");
     }
 
     /**
@@ -401,10 +416,9 @@ public class Driver {
      * @throws IOException
      */
     public void add() throws IOException {
-        System.out.println(ANSI_RED +
-            "WARNING: If you are adding a Theater or Event to a non existing Venue, you must first CREATE the Venue and or Theater before creating that Event"
-            + ANSI_RESET);
-        System.out
+        cpWarn.println(
+            "WARNING: If you are adding a Theater or Event to a non existing Venue, you must first CREATE the Venue and or Theater before creating that Event");
+        cpInfo
             .println("Do you want to add a(n): Venue(1), Theater(2), Event(3)? Enter a Number");
         getInput();
         if (input == 1) {
@@ -414,7 +428,7 @@ public class Driver {
         } else if (input == 3) {
             addEvent();
         } else {
-            System.out.println("Not an option!");
+            cpError.println("Not an option!");
             return;
         }
     }
@@ -426,9 +440,9 @@ public class Driver {
      * @throws IOException
      */
     public void addVenue() throws IOException {
-        System.out.println("Enter location of venue (Address, City, State)");
+        cpInfo.println("Enter location of venue (Address, City, State)");
         String venueLoc = bufferedReader.readLine();
-        System.out.println("Enter name of venue");
+        cpInfo.println("Enter name of venue");
         String venueName = bufferedReader.readLine();
         selectedVenue = new Venue(venueLoc, venueName);
         venues.add(selectedVenue);
@@ -443,9 +457,9 @@ public class Driver {
     public void addTheater() throws IOException {
         setSelectedVenue();
 
-        System.out.println("Enter Theater room number");
+        cpInfo.println("Enter Theater room number");
         int tRoom = Integer.parseInt(bufferedReader.readLine());
-        System.out.println("Is this theater handicap supported? Enter 1(Yes) or 0(No)");
+        cpInfo.println("Is this theater handicap supported? Enter 1(Yes) or 0(No)");
         getInput();
         boolean tHandicap = (input == 1) ? true : (input == 0 ? false : null);
 
@@ -463,11 +477,11 @@ public class Driver {
         setSelectedVenue();
         setSelectedTheater();
 
-        System.out.println("Enter Date of event (MMMM DD, YYYY 0:00 AM/PM)");
+        cpInfo.println("Enter Date of event (ex: January 20, 2020 10:00 AM)");
         String eDate = bufferedReader.readLine();
-        System.out.println("Enter Title of event");
+        cpInfo.println("Enter Title of event");
         String eTitle = bufferedReader.readLine();
-        System.out
+        cpInfo
             .println(
                 "Choose a genre for the event: " + "\n1. Comedy" + "\n2. Horror" + "\n3. Thriller"
                     + "\n4. Romance" + "\n5. Indie" + "\n6. Family" + "\n7. Action" + "\n8. Rap"
@@ -528,11 +542,11 @@ public class Driver {
                 eGenre = Genre.NONE;
                 break;
         }
-        System.out.println("Enter Description of event");
+        cpInfo.println("Enter Description of event");
         String eDesc = bufferedReader.readLine();
-        System.out.println("Is this event explicit? Enter 1(Yes) or 0(No)");
+        cpInfo.println("Is this event explicit? Enter 1(Yes) or 0(No)");
         boolean eExplicit = Integer.parseInt(bufferedReader.readLine()) == 1;
-        System.out.println(
+        cpInfo.println(
             "Choose an event type: " + "\n1. Movie" + "\n2. Concert" + "\n3. Play");
         Type eType;
         switch (Integer.parseInt(bufferedReader.readLine())) {
@@ -549,7 +563,7 @@ public class Driver {
                 eType = Type.NONE;
                 break;
         }
-        System.out.println("Enter price of ticket $(##.##) JUST THE NUMBER");
+        cpInfo.println("Enter price of ticket $(##.##) JUST THE NUMBER");
         double ePrice = Double.parseDouble(bufferedReader.readLine());
 
         Event event = new Event(eDate, eTitle, eGenre, eDesc, eExplicit, eType, ePrice);
@@ -573,7 +587,7 @@ public class Driver {
      * @throws IOException
      */
     private void remove() throws IOException {
-        System.out
+        cpInfo
             .println("Do you want to remove a(n): Venue(1), Theater(2), Event(3)? Enter a Number");
         getInput();
         if (input == 1) {
@@ -583,7 +597,7 @@ public class Driver {
         } else if (input == 3) {
             removeEvent();
         } else {
-            System.out.println("Not an option!");
+            cpError.println("Not an option!");
             return;
         }
     }
@@ -594,11 +608,13 @@ public class Driver {
      * @throws IOException
      */
     public void removeVenue() throws IOException {
-        System.out.println("Choose which to delete:");
+        cpInfo.println("Choose which to delete:");
         setSelectedVenue();
-        System.out.println(
-            venues.remove(selectedVenue) ? "Venue Removed Successfully"
-                : "Venue Remove Failed");
+        if (venues.remove(selectedVenue)) {
+            cpInfo.println("Venue Removed Successfully");
+        } else {
+            cpError.println("Venue Remove Failed");
+        }
         venues.saveVenues();
     }
 
@@ -606,14 +622,17 @@ public class Driver {
      * Removes a theater from the list
      */
     public void removeTheater() throws IOException {
-        System.out.println("Choose which to delete:");
+        cpInfo.println("Choose which to delete:");
         setSelectedVenue();
         setSelectedTheater();
-        System.out.println(
-            selectedVenue.getTheaters().remove(selectedTheater) ? "Theater Removed Successfully"
-                : "Theater Remove Failed");
-        venues.saveVenues();
+        if (selectedVenue.getTheaters().remove(selectedTheater)) {
+            cpInfo.println("Theater Removed Successfully");
+        } else {
+            cpError.println("Theater Remove Failed");
+        }
     }
+
+    //TODO
 
     /**
      * Removes an event from the list
@@ -621,9 +640,11 @@ public class Driver {
     public void removeEvent() throws IOException {
         System.out.println("Choose which to delete:");
         select();
-        System.out.println(
-            selectedTheater.getEvents().remove(selectedEvent) ? "Event Removed Successfully"
-                : "Event Remove Failed");
+        if (selectedTheater.getEvents().remove(selectedEvent)) {
+            cpInfo.println("Event Removed Successfully");
+        } else {
+            cpError.println("Event Remove Failed");
+        }
         venues.saveVenues();
 
     }
@@ -634,14 +655,14 @@ public class Driver {
      * @throws IOException
      */
     public void search() throws IOException {
-        System.out
+        cpInfo
             .println(
                 "Enter a number to search for events: " + "\n1.Search title" + "\n2.Filter by Genre"
                     + "\n3.Filter by Venue" + "\n4.Filter by Rating" + "\n5.Filter by Event Type");
         int option = Integer.parseInt(bufferedReader.readLine());
         switch (option) {
             case 1:
-                System.out.println("Enter title: ");
+                cpInfo.println("Enter title: ");
                 String title = bufferedReader.readLine();
                 venues.search(title);
                 break;
@@ -650,12 +671,12 @@ public class Driver {
                 venues.filterByGenre(genre);
                 break;
             case 3:
-                System.out.println("Enter name of venue: ");
+                cpInfo.println("Enter name of venue: ");
                 String name = bufferedReader.readLine();
                 venues.filterByVenue(name);
                 break;
             case 4:
-                System.out.println("Enter a whole number rating from 1-5: ");
+                cpInfo.println("Enter a whole number rating from 1-5: ");
                 int rating = Integer.parseInt(bufferedReader.readLine());
                 venues.filterByRating(rating);
                 break;
@@ -674,7 +695,7 @@ public class Driver {
      * @throws IOException
      */
     private Type chooseType() throws IOException {
-        System.out.println(
+        cpInfo.println(
             "Choose an event type to filter by: " + "\n1. Movie" + "\n2. Concert" + "\n3. Play");
         int option = Integer.parseInt(bufferedReader.readLine());
         switch (option) {
@@ -696,7 +717,7 @@ public class Driver {
      * @throws IOException
      */
     private Genre chooseGenre() throws IOException {
-        System.out
+        cpInfo
             .println(
                 "Choose a genre to filter by: " + "\n1. Comedy" + "\n2. Horror" + "\n3. Thriller"
                     + "\n4. Romance" + "\n5. Indie" + "\n6. Family" + "\n7. Action" + "\n8. Rap"
@@ -776,7 +797,7 @@ public class Driver {
     public void purchaseTicket() throws IOException {
         viewSeating();
 
-        System.out
+        cpInfo
             .println("X means occupied, O means available\nChoose the column of the seat (A-J)");
         char line = bufferedReader.readLine().charAt(0);
 
@@ -805,7 +826,7 @@ public class Driver {
             row = 0;
         }
 
-        System.out.println("Choose the row of the seat (0-9)");
+        cpInfo.println("Choose the row of the seat (0-9)");
         int col = Integer.parseInt(bufferedReader.readLine());
 
         if (selectedEvent.getSeats()[row][col].equals("X")) {
@@ -813,7 +834,7 @@ public class Driver {
             return;
         }
 
-        System.out.println("Are you sure you want to buy a ticket for (Y/N): ");
+        cpInfo.println("Are you sure you want to buy a ticket for (Y/N): ");
         if (currentUser instanceof RegisteredUser) {
             venues.printTicket(selectedVenue, selectedTheater, selectedEvent,
                 ((RegisteredUser) currentUser).getStatus());
@@ -839,7 +860,7 @@ public class Driver {
      * @throws IOException
      */
     public void orderTicket(char line, int col) throws IOException {
-        System.out.println(
+        cpInfo.println(
             "Great! Ticket purchased. Would you like: " + "\n1. Physical ticket"
                 + "\n2. Online ticket"
                 + "\n3. Both");
@@ -895,7 +916,7 @@ public class Driver {
      */
     public void generateOnlineTicket(Venue venue, Theater theater, Event event, char line,
         int col) {
-        System.out.println(
+        cpInfo.println(
             "Here is your online receipt. Reminder, receipts save automatically in history for registered users.");
         if (currentUser instanceof RegisteredUser) {
             System.out.println(venues.printReceipt(venue, theater, event, line, col,
