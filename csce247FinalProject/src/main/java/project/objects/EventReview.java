@@ -7,6 +7,9 @@ public class EventReview {
     private String title;
     private LinkedList<Review> reviews = new LinkedList<>();
 
+    /**
+     * Getters
+     */
     public LinkedList<Review> getReviews() {
         return reviews;
     }
@@ -15,6 +18,9 @@ public class EventReview {
         return title;
     }
 
+    /**
+     * Setters
+     */
     public void setReviews(LinkedList<Review> reviews) {
         this.reviews = reviews;
     }
@@ -25,7 +31,9 @@ public class EventReview {
 
 
     /**
-     * @return
+     * Gets the average rating by dividing the sum by the total count
+     *
+     * @return average
      */
     public double getRating() {
         int total = reviews.size();

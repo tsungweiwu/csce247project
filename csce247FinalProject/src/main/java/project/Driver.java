@@ -47,44 +47,16 @@ public class Driver {
         }
     }
 
+    /**
+     * Menu for the view seats and purchase ticket function
+     *
+     * @throws IOException
+     */
     public void selectAndView() throws IOException {
         System.out.println("Do you want to purchase ticket(1) or view seats(2)? Enter a number");
         int input = Integer.parseInt(bufferedReader.readLine());
 
-        System.out.println("Please select a venue:");
-        int count = 1;
-        for (Venue venue : venues.getVenues()) {
-            System.out.println(count + ". " + venue.getName() + " - " + venue.getLocation());
-            count++;
-        }
-        int option = Integer.parseInt(bufferedReader.readLine());
-        selectedVenue = venues.getVenues().get(option - 1);
-        printAllEventsFromVenue(selectedVenue, input);
-    }
-
-    private void printAllEventsFromVenue(Venue selectedVenue, int input) throws IOException {
-        int count = 1;
-        for (Theater theater : selectedVenue.getTheaters()) {
-            for (Event event : theater.getEvents()) {
-                System.out.println(
-                    count + ". " + event.getTitle() + " - " + event.getDate() + " - Room: "
-                        + theater.getRoom());
-                count++;
-            }
-        }
-        int option = Integer.parseInt(bufferedReader.readLine());
-        count = 1;
-        outerLoop:
-        for (Theater theater : selectedVenue.getTheaters()) {
-            for (Event event : theater.getEvents()) {
-                if (count == option) {
-                    selectedTheater = theater;
-                    selectedEvent = event;
-                    break outerLoop;
-                }
-                count++;
-            }
-        }
+        select();
 
         if (input == 1) {
             purchaseTicket();
@@ -93,6 +65,9 @@ public class Driver {
         }
     }
 
+    /**
+     * Option menu for the user to select
+     */
     public void options() {
         if (currentUser instanceof RegisteredUser) {
             System.out.println(
@@ -112,6 +87,13 @@ public class Driver {
         }
     }
 
+    /**
+     * Command Menu that corresponds to the function selected
+     *
+     * @param option
+     * @return
+     * @throws IOException
+     */
     public boolean command(int option) throws IOException {
         if (option == 0) {
             return true;
@@ -142,9 +124,7 @@ public class Driver {
                 } else if (option == 5) {
                     addEvent();
                 } else if (option == 6) {
-                    System.out.println("Enter the title of event to remove");
-                    String title = bufferedReader.readLine();
-                    removeEvent(title);
+                    removeEvent();
                 } else if (option == 7) {
                     signOut();
                 } else {
@@ -163,10 +143,52 @@ public class Driver {
         return false;
     }
 
-    public void signOut() {
-        currentUser = new User("default");
+    /**
+     * selects the current data to be used
+     *
+     * @throws IOException
+     */
+    public void select() throws IOException {
+        System.out.println("Please select a venue:");
+        int count = 1;
+        for (Venue venue : venues.getVenues()) {
+            System.out.println(count + ". " + venue.getName() + " - " + venue.getLocation());
+            count++;
+        }
+        int option = Integer.parseInt(bufferedReader.readLine());
+        selectedVenue = venues.getVenues().get(option - 1);
+
+        count = 1;
+        for (Theater theater : selectedVenue.getTheaters()) {
+            for (Event event : theater.getEvents()) {
+                System.out.println(
+                    count + ". " + event.getTitle() + " - " + event.getDate() + " - Room: "
+                        + theater.getRoom());
+                count++;
+            }
+        }
+
+        option = Integer.parseInt(bufferedReader.readLine());
+
+        count = 1;
+        outerLoop:
+        for (Theater theater : selectedVenue.getTheaters()) {
+            for (Event event : theater.getEvents()) {
+                if (count == option) {
+                    selectedTheater = theater;
+                    selectedEvent = event;
+                    break outerLoop;
+                }
+                count++;
+            }
+        }
     }
 
+    /**
+     * Prompts user for login credentials and verifies it with the JSON to log you in
+     *
+     * @throws IOException
+     */
     public void signIn() throws IOException {
         HashSet<RegisteredUser> userList = users.getUsers();
         HashSet<Admin> adminList = users.getAdmins();
@@ -187,6 +209,18 @@ public class Driver {
         }
     }
 
+    /**
+     * Logs you out by setting you as default user
+     */
+    public void signOut() {
+        currentUser = new User("default");
+    }
+
+    /**
+     * Registers you and submits the data into the JSON and logs you in while at it
+     *
+     * @throws IOException
+     */
     public void register() throws IOException {
         System.out.println("To register, enter username: ");
         String username = bufferedReader.readLine();
@@ -224,11 +258,27 @@ public class Driver {
                 break;
         }
         RegisteredUser user = new RegisteredUser(username, password, status);
-        users.addUser(username, password, status);
+        users.add(user);
         currentUser = user;
         System.out.println("Great! You're registered, and you are also signed in.");
     }
 
+    /**
+     * Writes a review and sends it to be submitted to the JSON file
+     *
+     * @param rating
+     * @param review
+     * @param title
+     */
+    public void writeReview(int rating, String review, String title) {
+        reviews.writeReview(venues.getEvent(title), review, rating);
+    }
+
+    /**
+     * Allows the creation of another admin only if you are an admin. Submits data into JSON file.
+     *
+     * @throws IOException
+     */
     public void addAdmin() throws IOException {
         System.out.println("Enter username for admin: ");
         String username = bufferedReader.readLine();
@@ -246,6 +296,11 @@ public class Driver {
         System.out.println("Admin created");
     }
 
+    /**
+     * Adds a new event into the list
+     *
+     * @throws IOException
+     */
     public void addEvent() throws IOException {
         System.out.println("Enter location of venue (Address, City, State)");
         String venueLoc = bufferedReader.readLine();
@@ -357,11 +412,22 @@ public class Driver {
         venues.add(venue);
     }
 
-    public void removeEvent(String title) {
+    /**
+     * Removes an event from the list
+     */
+    public void removeEvent() throws IOException {
+        System.out.println("Choose which to delete:");
+        select();
         System.out.println(
-            venues.removeByTitle(title) ? "Event Removed Successfully" : "Event Remove Failed");
+            selectedTheater.getEvents().remove(selectedEvent) ? "Event Removed Successfully"
+                : "Event Remove Failed");
     }
 
+    /**
+     * Searches and filters accordingly to user's choice
+     *
+     * @throws IOException
+     */
     public void search() throws IOException {
         System.out
             .println(
@@ -396,6 +462,12 @@ public class Driver {
         }
     }
 
+    /**
+     * Chooses event type
+     *
+     * @return Type
+     * @throws IOException
+     */
     private Type chooseType() throws IOException {
         System.out.println(
             "Choose an event type to filter by: " + "\n1. Movie" + "\n2. Concert" + "\n3. Play");
@@ -412,6 +484,12 @@ public class Driver {
         }
     }
 
+    /**
+     * Chooses Event Genre
+     *
+     * @return Genre
+     * @throws IOException
+     */
     private Genre chooseGenre() throws IOException {
         System.out
             .println(
@@ -460,10 +538,16 @@ public class Driver {
 
     }
 
+    /**
+     * prints all the events being listed
+     */
     public void viewAllEvents() {
         venues.printAll();
     }
 
+    /**
+     * prints out a mapping of the seats in theater
+     */
     public void viewSeating() {
         String seats[][] = selectedEvent.getSeats();
 
@@ -479,6 +563,11 @@ public class Driver {
         }
     }
 
+    /**
+     * Allows you to choose a seat and purchases the seat
+     *
+     * @throws IOException
+     */
     public void purchaseTicket() throws IOException {
         viewSeating();
 
@@ -515,12 +604,18 @@ public class Driver {
         int col = Integer.parseInt(bufferedReader.readLine());
 
         if (selectedEvent.getSeats()[row][col].equals("X")) {
-            System.out.println("BISH SEAT IS TAKEN\n");
+            System.out.println("SEAT IS TAKEN!\n");
             return;
         }
 
         System.out.println("Are you sure you want to buy a ticket for (Y/N): ");
-        venues.printTicketFormat(selectedEvent);
+        if (currentUser instanceof RegisteredUser) {
+            venues.printTicket(selectedVenue, selectedTheater, selectedEvent,
+                ((RegisteredUser) currentUser).getStatus());
+        } else {
+            venues.printTicket(selectedVenue, selectedTheater, selectedEvent);
+        }
+
         String ans = bufferedReader.readLine();
         if (ans.equals("N")) {
             return;
@@ -531,6 +626,13 @@ public class Driver {
         orderTicket(line, col);
     }
 
+    /**
+     * Allows user to order the ticket and generate either a physical or digital receipt
+     *
+     * @param line
+     * @param col
+     * @throws IOException
+     */
     public void orderTicket(char line, int col) throws IOException {
         System.out.println(
             "Great! Ticket purchased. Would you like: " + "\n1. Physical ticket"
@@ -551,31 +653,61 @@ public class Driver {
         }
     }
 
+    /**
+     * Generates a physical ticket and prints it into a txt file
+     *
+     * @param venue
+     * @param theater
+     * @param event
+     * @param line
+     * @param col
+     */
     public void generatePhysicalTicket(Venue venue, Theater theater, Event event, char line,
         int col) {
         try {
             PrintWriter file = new PrintWriter(event.getTitle() + "_ticket_receipt.txt", "UTF-8");
-            file.print(venues.printReceipt(venue, theater, event, line, col));
+            if (currentUser instanceof RegisteredUser) {
+                file.print(venues.printReceipt(venue, theater, event, line, col,
+                    ((RegisteredUser) currentUser).getStatus()));
+            } else {
+                file.print(venues.printReceipt(venue, theater, event, line, col));
+            }
+
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Generates a digital receipt and stores it into the User's JSON file
+     *
+     * @param venue
+     * @param theater
+     * @param event
+     * @param line
+     * @param col
+     */
     public void generateOnlineTicket(Venue venue, Theater theater, Event event, char line,
         int col) {
         System.out.println(
             "Here is your online receipt. Reminder, receipts save automatically in history for registered users.");
-        System.out.println(venues.printReceipt(venue, theater, event, line, col));
-        if (currentUser.getClass().equals(RegisteredUser.class)) {
-            ((RegisteredUser) currentUser)
-                .addTicket(venues.printReceipt(venue, theater, event, line, col));
-            users.saveUsers();
+        if (currentUser instanceof RegisteredUser) {
+            System.out.println(venues.printReceipt(venue, theater, event, line, col,
+                ((RegisteredUser) currentUser).getStatus()));
+            if (currentUser.getClass().equals(RegisteredUser.class)) {
+                ((RegisteredUser) currentUser)
+                    .addTicket(venues.printReceipt(venue, theater, event, line, col,
+                        ((RegisteredUser) currentUser).getStatus()));
+                users.saveUsers();
+            }
+        } else {
+            System.out.println(venues.printReceipt(venue, theater, event, line, col));
+            if (currentUser.getClass().equals(RegisteredUser.class)) {
+                ((RegisteredUser) currentUser)
+                    .addTicket(venues.printReceipt(venue, theater, event, line, col));
+                users.saveUsers();
+            }
         }
-
-    }
-
-    public void writeReview(int rating, String review, String title) {
-        reviews.writeReview(venues.getEvent(title), review, rating);
     }
 }

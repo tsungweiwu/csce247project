@@ -59,6 +59,11 @@ public class UserDatabase extends DataManager implements Database<User> {
         saveAdmins();
     }
 
+    /**
+     * Adds Users into JSON file and saves it as its corresponding user type
+     *
+     * @param user
+     */
     public void add(User user) {
         if (user instanceof RegisteredUser) {
             getUsers().add((RegisteredUser) user);
@@ -69,7 +74,12 @@ public class UserDatabase extends DataManager implements Database<User> {
         }
     }
 
-
+    /**
+     * Removes the User from the JSON File
+     *
+     * @param user
+     * @return
+     */
     public boolean remove(User user) {
         if (user instanceof RegisteredUser) {
             getUsers().remove((RegisteredUser) user);
@@ -109,6 +119,9 @@ public class UserDatabase extends DataManager implements Database<User> {
         return false;
     }
 
+    /**
+     * Loads the users from the JSON File and into the program
+     */
     public void loadUsers() {
         if (!new File(USER_FILE_NAME).exists()) {
             try {
@@ -123,6 +136,9 @@ public class UserDatabase extends DataManager implements Database<User> {
         }.getType()));
     }
 
+    /**
+     * Loads the admins from the JSON File and into the program
+     */
     public void loadAdmins() {
         if (!new File(ADMIN_FILE_NAME).exists()) {
             try {
@@ -137,6 +153,16 @@ public class UserDatabase extends DataManager implements Database<User> {
         }.getType()));
     }
 
+    /**
+     * Checks the user and admin list to see the object type, then checks if the username and
+     * password entered is equal and then returns the success/failure of login
+     *
+     * @param username
+     * @param password
+     * @param hashSet
+     * @param clazz
+     * @return
+     */
     public boolean login(String username, String password, HashSet<? extends User> hashSet,
         Class<? extends User> clazz) {
         if (clazz == RegisteredUser.class) {
@@ -161,6 +187,13 @@ public class UserDatabase extends DataManager implements Database<User> {
         return false;
     }
 
+    /**
+     * Obtains the user by the username from the list and returns that object
+     *
+     * @param username
+     * @param hashSet
+     * @return
+     */
     public User getUser(String username, HashSet<? extends User> hashSet) {
         for (User user : hashSet) {
             if (user.getUsername().equalsIgnoreCase(username)) {
@@ -170,6 +203,13 @@ public class UserDatabase extends DataManager implements Database<User> {
         return null;
     }
 
+    /**
+     * Checks to see if the user exists in the list and JSON file
+     *
+     * @param username
+     * @param hashSet
+     * @return
+     */
     public boolean isUser(String username, HashSet<? extends User> hashSet) {
         for (User user : hashSet) {
             if (user.getUsername().equalsIgnoreCase(username)) {

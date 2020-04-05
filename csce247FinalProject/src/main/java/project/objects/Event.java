@@ -128,24 +128,6 @@ public class Event {
         this.seats[x][y] = "X";
     }
 
-//    /**
-//     * Prints out the menu for the display of events
-//     */
-//    public String toString() {
-//        return "Type: \t" + this.type + "\nPrice: \t$" + this.price + "\nDate & Time: \t"
-//            + this.date + "\nTitle: \t" + this.title + "\nGenre: \t" + this.genre
-//            + "\nDescription: \t" + this.description + "\nVenue: \t"
-//            + "\nExplicit: \t" + (this.explicit ? "Yes"
-//            : "No")
-//            + "\nRatings: \t" + this.getRating() + "\n";
-//    }
-
-    public String ticketString() {
-        return "*********************************************************************"
-
-            + "\n*********************************************************************";
-    }
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null || getClass() != obj.getClass()) {

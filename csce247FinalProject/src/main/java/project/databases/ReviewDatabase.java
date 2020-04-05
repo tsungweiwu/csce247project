@@ -18,6 +18,28 @@ public class ReviewDatabase extends DataManager {
         loadReviews();
     }
 
+    /**
+     * Getter
+     */
+    public HashSet<EventReview> getEventReviews() {
+        return eventReviews;
+    }
+
+    /**
+     * Setter
+     */
+    public void setEventReviews(HashSet<EventReview> eventReviews) {
+        this.eventReviews = eventReviews;
+    }
+
+    /**
+     * Writes a review into the JSON file, checks to see if review already exists and makes sure
+     * that all the same events have the same reviews otherwise they have different reviews
+     *
+     * @param event
+     * @param comment
+     * @param rating
+     */
     public void writeReview(Event event, String comment, int rating) {
         if (!containsEventReview(event)) {
             EventReview eventReview = new EventReview();
@@ -33,6 +55,12 @@ public class ReviewDatabase extends DataManager {
         saveReviews();
     }
 
+    /**
+     * Checks to see if the event review exists
+     *
+     * @param e
+     * @return boolean
+     */
     private boolean containsEventReview(Event e) {
         for (EventReview eventReview : getEventReviews()) {
             if (eventReview.getTitle().equalsIgnoreCase(e.getTitle())) {
@@ -42,6 +70,12 @@ public class ReviewDatabase extends DataManager {
         return false;
     }
 
+    /**
+     * Finds all the same events and makes sure that they have the same reviews
+     *
+     * @param e
+     * @return eventReview
+     */
     public EventReview findEventReview(Event e) {
         for (EventReview eventReview : getEventReviews()) {
             if (eventReview.getTitle().trim().equalsIgnoreCase(e.getTitle().trim())) {
@@ -54,6 +88,9 @@ public class ReviewDatabase extends DataManager {
         return eventReview;
     }
 
+    /**
+     * Loads the reviews from the JSON file and loads it into the program
+     */
     public void loadReviews() {
         if (!new File(REVIEW_FILE_NAME).exists()) {
             try {
@@ -68,15 +105,10 @@ public class ReviewDatabase extends DataManager {
         }.getType()));
     }
 
+    /**
+     * Saves and write the reviews into the JSON File
+     */
     public void saveReviews() {
         write(getEventReviews(), REVIEW_FILE_NAME);
-    }
-
-    public HashSet<EventReview> getEventReviews() {
-        return eventReviews;
-    }
-
-    public void setEventReviews(HashSet<EventReview> eventReviews) {
-        this.eventReviews = eventReviews;
     }
 }

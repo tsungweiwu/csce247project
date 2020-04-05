@@ -5,7 +5,6 @@ package project.objects;
  */
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Venue {
 

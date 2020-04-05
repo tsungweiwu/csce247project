@@ -18,7 +18,6 @@ public class Theater {
         this.setEvents(new ArrayList<>());
     }
 
-
     /**
      * Getters
      */
@@ -30,11 +29,9 @@ public class Theater {
         return handicap;
     }
 
-
     public ArrayList<Event> getEvents() {
         return events;
     }
-
 
     /**
      * Setters
@@ -48,7 +45,6 @@ public class Theater {
     public void setHandicap(boolean handicap) {
         this.handicap = handicap;
     }
-
 
     public void setEvents(ArrayList<Event> events) {
         this.events = events;
@@ -101,5 +97,4 @@ public class Theater {
         }
         return null;
     }
-
 }

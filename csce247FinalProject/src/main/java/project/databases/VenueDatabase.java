@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import project.objects.Event;
 import project.objects.Genre;
+import project.objects.Status;
 import project.objects.Theater;
 import project.objects.Type;
 import project.objects.Venue;
@@ -84,20 +85,6 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
     }
 
     /**
-     * Removes an event by title
-     *
-     * @param title
-     * @return
-     */
-    public boolean removeByTitle(String title) {
-        boolean check = getVenues().remove(getVenue(title));
-        if (check) {
-            saveVenues();
-        }
-        return check;
-    }
-
-    /**
      * @param venue
      * @return
      */
@@ -161,7 +148,15 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
      * @param title
      */
     public void search(String title) {
-        printFormat(getVenue(title), getTheater(title), getEvent(title));
+        for (Venue venue : getVenues()) {
+            for (Theater theater : venue.getTheaters()) {
+                for (Event event : theater.getEvents()) {
+                    if (event.getTitle().equals(title)) {
+                        printFormat(venue, theater, event);
+                    }
+                }
+            }
+        }
     }
 
     /**
@@ -206,6 +201,23 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
                     if (reviewDatabase.findEventReview(event).getRating() < getCeil(rating)
                         && reviewDatabase.findEventReview(event).getRating() >= Math
                         .floor(rating)) {
+                        printFormat(venue, theater, event);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Filters the events by the type
+     *
+     * @param type
+     */
+    public void filterByEventType(Type type) {
+        for (Venue venue : getVenues()) {
+            for (Theater theater : venue.getTheaters()) {
+                for (Event event : theater.getEvents()) {
+                    if (event.getType() == type) {
                         printFormat(venue, theater, event);
                     }
                 }
@@ -284,23 +296,6 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
     }
 
     /**
-     * Filters the events by the type
-     *
-     * @param type
-     */
-    public void filterByEventType(Type type) {
-        for (Venue venue : getVenues()) {
-            for (Theater theater : venue.getTheaters()) {
-                for (Event event : theater.getEvents()) {
-                    if (event.getType() == type) {
-                        printFormat(venue, theater, event);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * @param venue
      * @param theater
      * @param event
@@ -321,23 +316,6 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
         builder.append("Event Rating: ").append(reviewDatabase.findEventReview(event).getRating())
             .append("\n\n");
         System.out.println(builder.toString());
-    }
-
-    /**
-     * prints the ticket format
-     *
-     * @param e
-     */
-    public void printTicketFormat(Event e) {
-        for (Venue venue : getVenues()) {
-            for (Theater theater : venue.getTheaters()) {
-                for (Event event : theater.getEvents()) {
-                    if (event == e) {
-                        printTicket(venue, theater, event);
-                    }
-                }
-            }
-        }
     }
 
     /**
@@ -362,6 +340,32 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
         System.out.println(builder.toString());
     }
 
+    /**
+     * Prints the Ticket
+     *
+     * @param venue
+     * @param theater
+     * @param event
+     */
+    public void printTicket(Venue venue, Theater theater, Event event, Status status) {
+        double discount = discountPercent(status);
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("Type:\t").append(event.getType().toString()).append("\n");
+        builder.append("Theater Room:\t").append(theater.getRoom()).append("\n");
+        builder.append("Original Price:\t$").append(event.getPrice()).append("\n");
+        builder.append("Price with ").append(status).append(" discount:\t$")
+            .append(String.format("%.2f", event.getPrice() * discount)).append("\n");
+        builder.append("Date & Time:\t").append(event.getDate()).append("\n");
+        builder.append("Title:\t").append(event.getTitle()).append("\n");
+        builder.append("Genre:\t").append(event.getGenre().toString()).append("\n");
+        builder.append("Venue:\t").append(venue.getName()).append("\t").append(venue.getLocation())
+            .append("\n");
+        builder.append("Event Rating: ").append(reviewDatabase.findEventReview(event).getRating())
+            .append("\n\n");
+        System.out.println(builder.toString());
+    }
+
     public String printReceipt(Venue venue, Theater theater, Event event, char line, int col) {
         StringBuilder builder = new StringBuilder();
         builder.append("*************************************************\n");
@@ -376,6 +380,34 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
         return builder.toString();
     }
 
+    public String printReceipt(Venue venue, Theater theater, Event event, char line, int col,
+        Status status) {
+        double discount = discountPercent(status);
+        StringBuilder builder = new StringBuilder();
+        builder.append("*************************************************\n");
+        builder.append("Venue Name: ").append(venue.getName()).append("\n");
+        builder.append("Location: ").append(venue.getLocation()).append("\n");
+        builder.append("Room: ").append(theater.getRoom()).append(" - Seat: ").append(line)
+            .append(col).append("\n");
+        builder.append("Title: ").append(event.getTitle()).append("\n");
+        builder.append("Date: ").append(event.getDate()).append("\n");
+        builder.append("Price: $").append(String.format("%.2f", event.getPrice() * discount))
+            .append("\n");
+        builder.append("*************************************************\n");
+        return builder.toString();
+    }
+
+    public double discountPercent(Status status) {
+        if (status == Status.MILITARY || status == Status.EMPLOYEE) {
+            return 0.85;
+        } else if (status == Status.TEACHER) {
+            return 0.90;
+        } else if (status == Status.STUDENT || status == Status.SENIOR) {
+            return 0.92;
+        }
+        return 1;
+    }
+
     /**
      * Prints out all the events
      */
@@ -387,10 +419,6 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
                 }
             }
         }
-    }
-
-    public boolean isSeatTaken(int x, int y, Event e) {
-        return e.getSeats()[x][y].equals("X");
     }
 
     /**
