@@ -28,6 +28,10 @@ public class Driver {
     private Theater selectedTheater = null;
     private Event selectedEvent = null;
     private BufferedReader bufferedReader;
+    private int count = 0;
+    private int input = 0;
+    public static final String ANSI_RESET = "\u001B[0m";
+    public static final String ANSI_RED = "\u001B[31m";
 
     public Driver() {
         currentUser = new User("default");
@@ -54,7 +58,7 @@ public class Driver {
      */
     public void selectAndView() throws IOException {
         System.out.println("Do you want to purchase ticket(1) or view seats(2)? Enter a number");
-        int input = Integer.parseInt(bufferedReader.readLine());
+        getInput();
 
         select();
 
@@ -78,7 +82,7 @@ public class Driver {
             System.out.println(
                 "\nAdmin: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
                     + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Add Admin"
-                    + "\n5. Add Event" + "\n6. Remove Event" + "\n7. Sign Out");
+                    + "\n5. Add Data" + "\n6. Remove Data" + "\n7. Sign Out");
         } else {
             System.out.println(
                 "\nMenu:" + " \n0. Quit" + "\n1. Search"
@@ -122,9 +126,9 @@ public class Driver {
                 if (option == 4) {
                     addAdmin();
                 } else if (option == 5) {
-                    addEvent();
+                    add();
                 } else if (option == 6) {
-                    removeEvent();
+                    remove();
                 } else if (option == 7) {
                     signOut();
                 } else {
@@ -149,14 +153,8 @@ public class Driver {
      * @throws IOException
      */
     public void select() throws IOException {
-        System.out.println("Please select a venue:");
-        int count = 1;
-        for (Venue venue : venues.getVenues()) {
-            System.out.println(count + ". " + venue.getName() + " - " + venue.getLocation());
-            count++;
-        }
-        int option = Integer.parseInt(bufferedReader.readLine());
-        selectedVenue = venues.getVenues().get(option - 1);
+        count = 1;
+        setSelectedVenue();
 
         count = 1;
         for (Theater theater : selectedVenue.getTheaters()) {
@@ -168,19 +166,57 @@ public class Driver {
             }
         }
 
-        option = Integer.parseInt(bufferedReader.readLine());
+        getInput();
 
         count = 1;
         outerLoop:
         for (Theater theater : selectedVenue.getTheaters()) {
             for (Event event : theater.getEvents()) {
-                if (count == option) {
+                if (count == input) {
                     selectedTheater = theater;
                     selectedEvent = event;
                     break outerLoop;
                 }
                 count++;
             }
+        }
+    }
+
+    /**
+     * @throws IOException
+     */
+    public void setSelectedVenue() throws IOException {
+        System.out.println("Please select a venue:");
+        count = 1;
+        for (Venue venue : venues.getVenues()) {
+            System.out.println(count + ". " + venue.getName() + " - " + venue.getLocation());
+            count++;
+        }
+        getInput();
+        selectedVenue = venues.getVenues().get(input - 1);
+    }
+
+    /**
+     * @throws IOException
+     */
+    public void setSelectedTheater() throws IOException {
+        System.out.println("Please select a theater:");
+        count = 1;
+        for (Theater theater : selectedVenue.getTheaters()) {
+            System.out
+                .println(count + ". Room #" + theater.getRoom() + " - Handicap: " + theater
+                    .isHandicap());
+            count++;
+        }
+        getInput();
+
+        count = 1;
+        for (Theater theater : selectedVenue.getTheaters()) {
+            if (count == input) {
+                selectedTheater = theater;
+                break;
+            }
+            count++;
         }
     }
 
@@ -296,22 +332,58 @@ public class Driver {
         System.out.println("Admin created");
     }
 
+    public void add() throws IOException {
+        System.out.println(ANSI_RED +
+            "WARNING: If you are adding a Theater or Event to a non existing Venue, you must first CREATE the Venue and or Theater before creating that Event"
+            + ANSI_RESET);
+        System.out
+            .println("Do you want to add a(n): Venue(1), Theater(2), Event(3)? Enter a Number");
+        getInput();
+        if (input == 1) {
+            addVenue();
+        } else if (input == 2) {
+            addTheater();
+        } else if (input == 3) {
+            addEvent();
+        } else {
+            System.out.println("Not an option!");
+            return;
+        }
+    }
+
+
+    public void addVenue() throws IOException {
+        System.out.println("Enter location of venue (Address, City, State)");
+        String venueLoc = bufferedReader.readLine();
+        System.out.println("Enter name of venue");
+        String venueName = bufferedReader.readLine();
+        selectedVenue = new Venue(venueLoc, venueName);
+        venues.add(selectedVenue);
+        venues.saveVenues();
+    }
+
+    public void addTheater() throws IOException {
+        setSelectedVenue();
+
+        System.out.println("Enter Theater room number");
+        int tRoom = Integer.parseInt(bufferedReader.readLine());
+        System.out.println("Is this theater handicap supported? Enter 1(Yes) or 0(No)");
+        getInput();
+        boolean tHandicap = (input == 1) ? true : (input == 0 ? false : null);
+
+        selectedTheater = new Theater(tRoom, tHandicap);
+        selectedVenue.addTheater(selectedTheater);
+        venues.saveVenues();
+    }
+
     /**
      * Adds a new event into the list
      *
      * @throws IOException
      */
     public void addEvent() throws IOException {
-        System.out.println("Enter location of venue (Address, City, State)");
-        String venueLoc = bufferedReader.readLine();
-        System.out.println("Enter name of venue");
-        String venueName = bufferedReader.readLine();
-
-        System.out.println("Enter Theater room number");
-        int tRoom = Integer.parseInt(bufferedReader.readLine());
-        System.out.println("Is this theater handicap supported? Enter 1(Yes) or 0(No)");
-        int input = Integer.parseInt(bufferedReader.readLine());
-        boolean tHandicap = (input == 1) ? true : (input == 0 ? false : null);
+        setSelectedVenue();
+        setSelectedTheater();
 
         System.out.println("Enter Date of event (MMMM DD, YYYY 0:00 AM/PM)");
         String eDate = bufferedReader.readLine();
@@ -381,8 +453,7 @@ public class Driver {
         System.out.println("Enter Description of event");
         String eDesc = bufferedReader.readLine();
         System.out.println("Is this event explicit? Enter 1(Yes) or 0(No)");
-        input = Integer.parseInt(bufferedReader.readLine());
-        boolean eExplicit = (input == 1) ? true : (input == 0 ? false : null);
+        boolean eExplicit = Integer.parseInt(bufferedReader.readLine()) == 1;
         System.out.println(
             "Choose an event type: " + "\n1. Movie" + "\n2. Concert" + "\n3. Play");
         Type eType;
@@ -403,13 +474,52 @@ public class Driver {
         System.out.println("Enter price of ticket $(##.##) JUST THE NUMBER");
         double ePrice = Double.parseDouble(bufferedReader.readLine());
 
-        Venue venue = new Venue(venueLoc, venueName);
-        Theater theater = new Theater(tRoom, tHandicap);
         Event event = new Event(eDate, eTitle, eGenre, eDesc, eExplicit, eType, ePrice);
 
-        theater.addEvent(event);
-        venue.addTheater(theater);
-        venues.add(venue);
+        selectedTheater.addEvent(event);
+        venues.saveVenues();
+    }
+
+    public void getInput() throws IOException {
+        input = Integer.parseInt(bufferedReader.readLine());
+    }
+
+    private void remove() throws IOException {
+        System.out
+            .println("Do you want to remove a(n): Venue(1), Theater(2), Event(3)? Enter a Number");
+        getInput();
+        if (input == 1) {
+            removeVenue();
+        } else if (input == 2) {
+            removeTheater();
+        } else if (input == 3) {
+            removeEvent();
+        } else {
+            System.out.println("Not an option!");
+            return;
+        }
+    }
+
+    public void removeVenue() throws IOException {
+        System.out.println("Choose which to delete:");
+        setSelectedVenue();
+        System.out.println(
+            venues.remove(selectedVenue) ? "Venue Removed Successfully"
+                : "Venue Remove Failed");
+        venues.saveVenues();
+    }
+
+    /**
+     * Removes a theater from the list
+     */
+    public void removeTheater() throws IOException {
+        System.out.println("Choose which to delete:");
+        setSelectedVenue();
+        setSelectedTheater();
+        System.out.println(
+            selectedVenue.getTheaters().remove(selectedTheater) ? "Theater Removed Successfully"
+                : "Theater Remove Failed");
+        venues.saveVenues();
     }
 
     /**
@@ -421,6 +531,7 @@ public class Driver {
         System.out.println(
             selectedTheater.getEvents().remove(selectedEvent) ? "Event Removed Successfully"
                 : "Event Remove Failed");
+        venues.saveVenues();
     }
 
     /**
