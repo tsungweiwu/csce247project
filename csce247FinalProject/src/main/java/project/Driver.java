@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.LinkedList;
-import org.fusesource.jansi.AnsiConsole;
 import project.databases.ReviewDatabase;
 import project.databases.UserDatabase;
 import project.databases.VenueDatabase;
@@ -30,12 +29,6 @@ public class Driver {
     private Theater selectedTheater = null;
     private Event selectedEvent = null;
     private BufferedReader bufferedReader;
-    private int count = 0;
-    private int input = 0;
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
     private LinkedList<Event> tempEvents = new LinkedList<>();
 
     public Driver() {
@@ -45,7 +38,6 @@ public class Driver {
     }
 
     public static void main(String[] args) throws IOException {
-        AnsiConsole.systemInstall();
         boolean quit = false;
         Driver d = new Driver();
         d.currentUser = new User("default");
@@ -64,7 +56,7 @@ public class Driver {
      */
     public void selectAndView() throws IOException {
         System.out.println("Do you want to purchase ticket(1) or view seats(2)? Enter a number");
-        getInput();
+        int input = Integer.parseInt(bufferedReader.readLine());
 
         select();
 
@@ -158,7 +150,7 @@ public class Driver {
      * @throws IOException
      */
     public void select() throws IOException {
-        count = 1;
+        int count = 1;
         setSelectedVenue();
 
         count = 1;
@@ -171,7 +163,7 @@ public class Driver {
             }
         }
 
-        getInput();
+        int input = Integer.parseInt(bufferedReader.readLine());
 
         count = 1;
         outerLoop:
@@ -194,16 +186,16 @@ public class Driver {
      */
     public void setSelectedVenue() throws IOException {
         if (venues.getVenues().isEmpty()) {
-            System.out.println(ANSI_RED + "You need to Create a Venue First!" + ANSI_RESET);
+            System.out.println("You need to Create a Venue First!");
             return;
         }
         System.out.println("Please select a venue:");
-        count = 1;
+        int count = 1;
         for (Venue venue : venues.getVenues()) {
             System.out.println(count + ". " + venue.getName() + " - " + venue.getLocation());
             count++;
         }
-        getInput();
+        int input = Integer.parseInt(bufferedReader.readLine());
         selectedVenue = venues.getVenues().get(input - 1);
     }
 
@@ -214,18 +206,18 @@ public class Driver {
      */
     public void setSelectedTheater() throws IOException {
         if (selectedVenue.getTheaters().isEmpty()) {
-            System.out.println(ANSI_RED + "You need to Create a Theater First!" + ANSI_RESET);
+            System.out.println("You need to Create a Theater First!");
             return;
         }
         System.out.println("Please select a theater:");
-        count = 1;
+        int count = 1;
         for (Theater theater : selectedVenue.getTheaters()) {
             System.out
                 .println(count + ". Room #" + theater.getRoom() + " - Handicap: " + theater
                     .isHandicap());
             count++;
         }
-        getInput();
+        int input = Integer.parseInt(bufferedReader.readLine());
 
         count = 1;
         for (Theater theater : selectedVenue.getTheaters()) {
@@ -251,13 +243,13 @@ public class Driver {
             }
         }
 
-        count = 1;
+        int count = 1;
         for (Event event : tempEvents) {
             System.out
                 .println(count + ". " + event.getTitle());
             count++;
         }
-        getInput();
+        int input = Integer.parseInt(bufferedReader.readLine());
 
         count = 1;
         for (Event event : tempEvents) {
@@ -401,12 +393,13 @@ public class Driver {
      * @throws IOException
      */
     public void add() throws IOException {
-        System.out.println(ANSI_RED +
+        System.out.println(
             "WARNING: If you are adding a Theater or Event to a non existing Venue, you must first CREATE the Venue and or Theater before creating that Event"
-            + ANSI_RESET);
+        );
         System.out
             .println("Do you want to add a(n): Venue(1), Theater(2), Event(3)? Enter a Number");
-        getInput();
+        int input = Integer.parseInt(bufferedReader.readLine());
+
         if (input == 1) {
             addVenue();
         } else if (input == 2) {
@@ -446,7 +439,7 @@ public class Driver {
         System.out.println("Enter Theater room number");
         int tRoom = Integer.parseInt(bufferedReader.readLine());
         System.out.println("Is this theater handicap supported? Enter 1(Yes) or 0(No)");
-        getInput();
+        int input = Integer.parseInt(bufferedReader.readLine());
         boolean tHandicap = (input == 1) ? true : (input == 0 ? false : null);
 
         selectedTheater = new Theater(tRoom, tHandicap);
@@ -559,15 +552,6 @@ public class Driver {
     }
 
     /**
-     * Inserts your input into a variable to be used
-     *
-     * @throws IOException
-     */
-    public void getInput() throws IOException {
-        input = Integer.parseInt(bufferedReader.readLine());
-    }
-
-    /**
      * Displays a menu to ask what type of information you want to remove
      *
      * @throws IOException
@@ -575,7 +559,7 @@ public class Driver {
     private void remove() throws IOException {
         System.out
             .println("Do you want to remove a(n): Venue(1), Theater(2), Event(3)? Enter a Number");
-        getInput();
+        int input = Integer.parseInt(bufferedReader.readLine());
         if (input == 1) {
             removeVenue();
         } else if (input == 2) {
@@ -768,6 +752,32 @@ public class Driver {
         }
     }
 
+    public int convertToNum(char line) {
+        if (line == 'A') {
+            return 0;
+        } else if (line == 'B') {
+            return 1;
+        } else if (line == 'C') {
+            return 2;
+        } else if (line == 'D') {
+            return 3;
+        } else if (line == 'E') {
+            return 4;
+        } else if (line == 'F') {
+            return 5;
+        } else if (line == 'G') {
+            return 6;
+        } else if (line == 'H') {
+            return 7;
+        } else if (line == 'I') {
+            return 8;
+        } else if (line == 'J') {
+            return 9;
+        }
+        return 0;
+    }
+
+
     /**
      * Allows you to choose a seat and purchases the seat
      *
@@ -780,37 +790,22 @@ public class Driver {
             .println("X means occupied, O means available\nChoose the column of the seat (A-J)");
         char line = bufferedReader.readLine().charAt(0);
 
-        int row;
-        if (line == 'A') {
-            row = 0;
-        } else if (line == 'B') {
-            row = 1;
-        } else if (line == 'C') {
-            row = 2;
-        } else if (line == 'D') {
-            row = 3;
-        } else if (line == 'E') {
-            row = 4;
-        } else if (line == 'F') {
-            row = 5;
-        } else if (line == 'G') {
-            row = 6;
-        } else if (line == 'H') {
-            row = 7;
-        } else if (line == 'I') {
-            row = 8;
-        } else if (line == 'J') {
-            row = 9;
-        } else {
-            row = 0;
-        }
+        int row = convertToNum(line);
 
         System.out.println("Choose the row of the seat (0-9)");
         int col = Integer.parseInt(bufferedReader.readLine());
 
         if (selectedEvent.getSeats()[row][col].equals("X")) {
             System.out.println("SEAT IS TAKEN!\n");
-            return;
+            System.out
+                .println(
+                    "X means occupied, O means available\nChoose the column of the seat (A-J)");
+            line = bufferedReader.readLine().charAt(0);
+
+            row = convertToNum(line);
+
+            System.out.println("Choose the row of the seat (0-9)");
+            col = Integer.parseInt(bufferedReader.readLine());
         }
 
         System.out.println("Are you sure you want to buy a ticket for (Y/N): ");

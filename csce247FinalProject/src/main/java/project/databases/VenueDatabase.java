@@ -325,8 +325,8 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
         builder.append("Event Rating: ")
             .append(String.format("%.2f", reviewDatabase.findEventReview(event).getRating()))
             .append("\n");
-        builder.append("\u001B[32mSeats Left: ").append(event.getAvailable())
-            .append("\n\n\u001B[0m");
+        builder.append("Seats Left: ").append(event.getAvailable())
+            .append("\n\n");
         System.out.println(builder.toString());
     }
 
