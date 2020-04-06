@@ -41,7 +41,7 @@ public class Driver {
         boolean quit = false;
         Driver d = new Driver();
         d.currentUser = new User("default");
-        System.out.println("Welcome to Paradise Showtimes! \n");
+        System.out.println("Welcome to Paradise Showtimes!");
         while (!quit) {
             d.options();
             int option = Integer.parseInt(d.bufferedReader.readLine());
@@ -73,17 +73,17 @@ public class Driver {
     public void options() {
         if (currentUser instanceof RegisteredUser) {
             System.out.println(
-                "\nUser: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
+                "User: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
                     + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket"
                     + "\n4. Write Review" + "\n5. Sign Out");
         } else if (currentUser instanceof Admin) {
             System.out.println(
-                "\nAdmin: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
+                "Admin: " + currentUser.getUsername() + "\n0. Quit" + "\n1. Search"
                     + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Add Admin"
                     + "\n5. Add Data" + "\n6. Remove Data" + "\n7. Sign Out");
         } else {
             System.out.println(
-                "\nMenu:" + " \n0. Quit" + "\n1. Search"
+                "Menu:" + " \n0. Quit" + "\n1. Search"
                     + "\n2. View All Events" + "\n3. View Seats/Purchase Ticket" + "\n4. Register"
                     + "\n5. Sign In");
         }
@@ -158,7 +158,7 @@ public class Driver {
             for (Event event : theater.getEvents()) {
                 System.out.println(
                     count + ". " + event.getTitle() + " - " + event.getDate() + " - Room: "
-                        + theater.getRoom());
+                        + theater.getRoom() + " - Price: $" + event.getPrice());
                 count++;
             }
         }
@@ -291,10 +291,10 @@ public class Driver {
 
         if (users.login(username, password, adminList, Admin.class)) {
             currentUser = users.getUser(username, adminList);
-            System.out.println("Login successful as Admin");
+            System.out.println("Login successful as Admin\n");
         } else if (users.login(username, password, userList, RegisteredUser.class)) {
             currentUser = users.getUser(username, userList);
-            System.out.println("Login successful as User");
+            System.out.println("Login successful as User\n");
         } else {
             System.out.println("Invalid username/password");
         }
@@ -750,6 +750,7 @@ public class Driver {
             }
             System.out.println();
         }
+        System.out.println("Seats Available: " + selectedEvent.getAvailable());
     }
 
     public int convertToNum(char line) {
@@ -777,6 +778,28 @@ public class Driver {
         return 0;
     }
 
+    /**
+     * Checks to see if seat was previously inputted
+     *
+     * @param row
+     * @param col
+     * @param x
+     * @param y
+     * @return
+     */
+    public boolean isSeatTaken(LinkedList<Integer> row, LinkedList<Integer> col, int x, int y) {
+        if (row.isEmpty() || col.isEmpty()) {
+            return false;
+        }
+
+        for (int i = 0; i < row.size(); i++) {
+            if (row.get(i) == x && col.get(i) == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     /**
      * Allows you to choose a seat and purchases the seat
@@ -786,34 +809,53 @@ public class Driver {
     public void purchaseTicket() throws IOException {
         viewSeating();
 
-        System.out
-            .println("X means occupied, O means available\nChoose the column of the seat (A-J)");
-        char line = bufferedReader.readLine().charAt(0);
+        System.out.println("How many tickets do you want? (No more than what is available!)");
+        int quantity = Integer.parseInt(bufferedReader.readLine());
 
-        int row = convertToNum(line);
+        if (quantity > selectedEvent.getAvailable()) {
+            return;
+        }
 
-        System.out.println("Choose the row of the seat (0-9)");
-        int col = Integer.parseInt(bufferedReader.readLine());
+        System.out.println("X means occupied, O means available");
 
-        if (selectedEvent.getSeats()[row][col].equals("X")) {
-            System.out.println("SEAT IS TAKEN!\n");
-            System.out
-                .println(
-                    "X means occupied, O means available\nChoose the column of the seat (A-J)");
-            line = bufferedReader.readLine().charAt(0);
+        LinkedList<Integer> row = new LinkedList<>();
+        LinkedList<Integer> col = new LinkedList<>();
+        char[] rowChar = new char[quantity];
+        char temp1;
+        int temp2;
+        int temp3;
 
-            row = convertToNum(line);
+        for (int i = 0; i < rowChar.length; i++) {
+            System.out.println("Choose the column of the seat (A-J)");
+            temp1 = bufferedReader.readLine().charAt(0);
+
+            temp2 = convertToNum(temp1);
 
             System.out.println("Choose the row of the seat (0-9)");
-            col = Integer.parseInt(bufferedReader.readLine());
+            temp3 = Integer.parseInt(bufferedReader.readLine());
+
+            while (selectedEvent.getSeats()[temp2][temp3].equals("X") || isSeatTaken(
+                row, col, temp2, temp3)) {
+                System.out.println("Seat is taken please try again!");
+                System.out.println("Choose the column of the seat (A-J)");
+                temp1 = bufferedReader.readLine().charAt(0);
+
+                temp2 = convertToNum(temp1);
+
+                System.out.println("Choose the row of the seat (0-9)");
+                temp3 = Integer.parseInt(bufferedReader.readLine());
+            }
+            rowChar[i] = temp1;
+            row.add(temp2);
+            col.add(temp3);
         }
 
         System.out.println("Are you sure you want to buy a ticket for (Y/N): ");
         if (currentUser instanceof RegisteredUser) {
             venues.printTicket(selectedVenue, selectedTheater, selectedEvent,
-                ((RegisteredUser) currentUser).getStatus());
+                ((RegisteredUser) currentUser).getStatus(), quantity);
         } else {
-            venues.printTicket(selectedVenue, selectedTheater, selectedEvent);
+            venues.printTicket(selectedVenue, selectedTheater, selectedEvent, quantity);
         }
 
         String ans = bufferedReader.readLine();
@@ -821,9 +863,11 @@ public class Driver {
             return;
         }
 
-        selectedEvent.setSeats(row, col);
+        for (int i = 0; i < row.size(); i++) {
+            selectedEvent.setSeats(row.get(i), col.get(i));
+        }
         venues.saveVenues();
-        orderTicket(line, col);
+        orderTicket(rowChar, col);
     }
 
     /**
@@ -833,7 +877,7 @@ public class Driver {
      * @param col
      * @throws IOException
      */
-    public void orderTicket(char line, int col) throws IOException {
+    public void orderTicket(char[] line, LinkedList<Integer> col) throws IOException {
         System.out.println(
             "Great! Ticket purchased. Would you like: " + "\n1. Physical ticket"
                 + "\n2. Online ticket"
@@ -862,8 +906,8 @@ public class Driver {
      * @param line
      * @param col
      */
-    public void generatePhysicalTicket(Venue venue, Theater theater, Event event, char line,
-        int col) {
+    public void generatePhysicalTicket(Venue venue, Theater theater, Event event, char[] line,
+        LinkedList<Integer> col) {
         try {
             PrintWriter file = new PrintWriter(event.getTitle() + "_ticket_receipt.txt", "UTF-8");
             if (currentUser instanceof RegisteredUser) {
@@ -888,8 +932,8 @@ public class Driver {
      * @param line
      * @param col
      */
-    public void generateOnlineTicket(Venue venue, Theater theater, Event event, char line,
-        int col) {
+    public void generateOnlineTicket(Venue venue, Theater theater, Event event, char[] line,
+        LinkedList<Integer> col) {
         System.out.println(
             "Here is your online receipt. Reminder, receipts save automatically in history for registered users.");
         if (currentUser instanceof RegisteredUser) {

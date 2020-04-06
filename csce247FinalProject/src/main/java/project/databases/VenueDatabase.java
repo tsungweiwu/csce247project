@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import project.objects.Event;
 import project.objects.Genre;
 import project.objects.Status;
@@ -326,7 +327,7 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
             .append(String.format("%.2f", reviewDatabase.findEventReview(event).getRating()))
             .append("\n");
         builder.append("Seats Left: ").append(event.getAvailable())
-            .append("\n\n");
+            .append("\n");
         System.out.println(builder.toString());
     }
 
@@ -337,11 +338,11 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
      * @param theater
      * @param event
      */
-    public void printTicket(Venue venue, Theater theater, Event event) {
+    public void printTicket(Venue venue, Theater theater, Event event, int quantity) {
         StringBuilder builder = new StringBuilder();
         builder.append("Type:\t").append(event.getType().toString()).append("\n");
         builder.append("Theater Room:\t").append(theater.getRoom()).append("\n");
-        builder.append("Price:\t$").append(event.getPrice()).append("\n");
+        builder.append("Price:\t$").append(event.getPrice() * quantity).append("\n");
         builder.append("Date & Time:\t").append(event.getDate()).append("\n");
         builder.append("Title:\t").append(event.getTitle()).append("\n");
         builder.append("Genre:\t").append(event.getGenre().toString()).append("\n");
@@ -349,7 +350,7 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
             .append("\n");
         builder.append("Event Rating: ")
             .append(String.format("%.2f", reviewDatabase.findEventReview(event).getRating()))
-            .append("\n\n");
+            .append("\n");
         System.out.println(builder.toString());
     }
 
@@ -360,15 +361,16 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
      * @param theater
      * @param event
      */
-    public void printTicket(Venue venue, Theater theater, Event event, Status status) {
+    public void printTicket(Venue venue, Theater theater, Event event, Status status,
+        int quantity) {
         double discount = discountPercent(status);
         StringBuilder builder = new StringBuilder();
 
         builder.append("Type:\t").append(event.getType().toString()).append("\n");
         builder.append("Theater Room:\t").append(theater.getRoom()).append("\n");
-        builder.append("Original Price:\t$").append(event.getPrice()).append("\n");
+        builder.append("Original Price:\t$").append(event.getPrice() * quantity).append("\n");
         builder.append("Price with ").append(status).append(" discount:\t$")
-            .append(String.format("%.2f", event.getPrice() * discount)).append("\n");
+            .append(String.format("%.2f", event.getPrice() * quantity * discount)).append("\n");
         builder.append("Date & Time:\t").append(event.getDate()).append("\n");
         builder.append("Title:\t").append(event.getTitle()).append("\n");
         builder.append("Genre:\t").append(event.getGenre().toString()).append("\n");
@@ -376,7 +378,7 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
             .append("\n");
         builder.append("Event Rating: ")
             .append(String.format("%.2f", reviewDatabase.findEventReview(event).getRating()))
-            .append("\n\n");
+            .append("\n");
         System.out.println(builder.toString());
 
     }
@@ -391,17 +393,22 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
      * @param col
      * @return
      */
-    public String printReceipt(Venue venue, Theater theater, Event event, char line, int col) {
+    public String printReceipt(Venue venue, Theater theater, Event event, char[] line,
+        LinkedList<Integer> col) {
         StringBuilder builder = new StringBuilder();
-        builder.append("*************************************************\n");
-        builder.append("Venue Name: ").append(venue.getName()).append("\n");
-        builder.append("Location: ").append(venue.getLocation()).append("\n");
-        builder.append("Room: ").append(theater.getRoom()).append(" - Seat: ").append(line)
-            .append(col).append("\n");
-        builder.append("Title: ").append(event.getTitle()).append("\n");
-        builder.append("Date: ").append(event.getDate()).append("\n");
-        builder.append("Price: $").append(event.getPrice()).append("\n");
-        builder.append("*************************************************\n");
+
+        for (int i = 0; i < line.length; i++) {
+            builder.append("\n*************************************************\n");
+            builder.append("Venue Name: ").append(venue.getName()).append("\n");
+            builder.append("Location: ").append(venue.getLocation()).append("\n");
+            builder.append("Room: ").append(theater.getRoom()).append(" - Seat: ").append(line[i])
+                .append(col.get(i)).append("\n");
+            builder.append("Title: ").append(event.getTitle()).append("\n");
+            builder.append("Date: ").append(event.getDate()).append("\n");
+            builder.append("Price: $").append(event.getPrice()).append("\n");
+            builder.append("*************************************************\n");
+        }
+
         return builder.toString();
     }
 
@@ -416,20 +423,25 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
      * @param status
      * @return
      */
-    public String printReceipt(Venue venue, Theater theater, Event event, char line, int col,
+    public String printReceipt(Venue venue, Theater theater, Event event, char[] line,
+        LinkedList<Integer> col,
         Status status) {
         double discount = discountPercent(status);
         StringBuilder builder = new StringBuilder();
-        builder.append("*************************************************\n");
-        builder.append("Venue Name: ").append(venue.getName()).append("\n");
-        builder.append("Location: ").append(venue.getLocation()).append("\n");
-        builder.append("Room: ").append(theater.getRoom()).append(" - Seat: ").append(line)
-            .append(col).append("\n");
-        builder.append("Title: ").append(event.getTitle()).append("\n");
-        builder.append("Date: ").append(event.getDate()).append("\n");
-        builder.append("Price: $").append(String.format("%.2f", event.getPrice() * discount))
-            .append("\n");
-        builder.append("*************************************************\n");
+
+        for (int i = 0; i < line.length; i++) {
+            builder.append("\n*************************************************\n");
+            builder.append("Venue Name: ").append(venue.getName()).append("\n");
+            builder.append("Location: ").append(venue.getLocation()).append("\n");
+            builder.append("Room: ").append(theater.getRoom()).append(" - Seat: ").append(line[i])
+                .append(col.get(i)).append("\n");
+            builder.append("Title: ").append(event.getTitle()).append("\n");
+            builder.append("Date: ").append(event.getDate()).append("\n");
+            builder.append("Price: $").append(String.format("%.2f", event.getPrice() * discount))
+                .append("\n");
+            builder.append("*************************************************\n");
+        }
+
         return builder.toString();
     }
 

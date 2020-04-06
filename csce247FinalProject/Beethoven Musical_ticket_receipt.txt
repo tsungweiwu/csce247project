@@ -1,0 +1,63 @@
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: A2
+Title: Beethoven Musical
+Date: April 06, 2020 1:30 PM
+Price: $5.0
+*************************************************
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: A3
+Title: Beethoven Musical
+Date: April 06, 2020 1:30 PM
+Price: $5.0
+*************************************************
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: A4
+Title: Beethoven Musical
+Date: April 06, 2020 1:30 PM
+Price: $5.0
+*************************************************
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: A5
+Title: Beethoven Musical
+Date: April 06, 2020 1:30 PM
+Price: $5.0
+*************************************************
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: A6
+Title: Beethoven Musical
+Date: April 06, 2020 1:30 PM
+Price: $5.0
+*************************************************
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: A7
+Title: Beethoven Musical
+Date: April 06, 2020 1:30 PM
+Price: $5.0
+*************************************************
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: A8
+Title: Beethoven Musical
+Date: April 06, 2020 1:30 PM
+Price: $5.0
+*************************************************
