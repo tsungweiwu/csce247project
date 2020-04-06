@@ -1,1 +1,45 @@
-[{"title":"The Joker","reviews":[{"rating":4,"review":"Great Movie!"},{"rating":5,"review":"Good Movie"},{"rating":1,"review":"Kind of scary! not so good"}]}]
+[
+  {
+    "title": "Aladdin",
+    "reviews": []
+  },
+  {
+    "title": "Frozen 2",
+    "reviews": []
+  },
+  {
+    "title": "The Jungle Book",
+    "reviews": [
+      {
+        "rating": 4,
+        "review": "fun experience"
+      }
+    ]
+  },
+  {
+    "title": "Beethoven Musical",
+    "reviews": [
+      {
+        "rating": 5,
+        "review": "Best Musical ever!"
+      }
+    ]
+  },
+  {
+    "title": "The Joker",
+    "reviews": [
+      {
+        "rating": 4,
+        "review": "Great Movie!"
+      },
+      {
+        "rating": 5,
+        "review": "Good Movie"
+      },
+      {
+        "rating": 1,
+        "review": "Kind of scary! not so good"
+      }
+    ]
+  }
+]

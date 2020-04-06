@@ -826,12 +826,12 @@ public class Driver {
         int temp3;
 
         for (int i = 0; i < rowChar.length; i++) {
-            System.out.println("Choose the column of the seat (A-J)");
+            System.out.println("Choose the row of the seat (A-J)");
             temp1 = bufferedReader.readLine().charAt(0);
 
             temp2 = convertToNum(temp1);
 
-            System.out.println("Choose the row of the seat (0-9)");
+            System.out.println("Choose the column of the seat (0-9)");
             temp3 = Integer.parseInt(bufferedReader.readLine());
 
             while (selectedEvent.getSeats()[temp2][temp3].equals("X") || isSeatTaken(

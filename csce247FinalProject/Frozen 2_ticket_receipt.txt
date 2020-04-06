@@ -1,0 +1,18 @@
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: D5
+Title: Frozen 2
+Date: April 05, 2020 10:30 AM
+Price: $8.0
+*************************************************
+
+*************************************************
+Venue Name: Regal
+Location: 1800 Senate St, Columbia, South Carolina
+Room: 1 - Seat: D6
+Title: Frozen 2
+Date: April 05, 2020 10:30 AM
+Price: $8.0
+*************************************************
