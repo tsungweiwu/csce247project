@@ -5,4 +5,8 @@ package project.objects;
  */
 public enum Genre {
     COMEDY, HORROR, THRILLER, ROMANCE, INDIE, FAMILY, ACTION, RAP, ROCK, POP, COUNTRY, LATIN, EDM, RNB, CLASSIC, OPERA, NONE;
+
+    Genre() {
+        int value = ordinal();
+    }
 }

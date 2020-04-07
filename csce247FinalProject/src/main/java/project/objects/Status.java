@@ -5,4 +5,8 @@ package project.objects;
  */
 public enum Status {
     MILITARY, EMPLOYEE, TEACHER, STUDENT, SENIOR, NONE;
+
+    Status() {
+        int value = ordinal();
+    }
 }

@@ -326,28 +326,9 @@ public class Driver {
 
         System.out.println("Enter the number corresponding to your status: "
             + "\n1. Military\n2. Employee\n3. Teacher\n4. Student\n5. Senior\n6. None");
-        int stat = Integer.parseInt(bufferedReader.readLine());
-        Status status = null;
-        switch (stat) {
-            case 1:
-                status = Status.MILITARY;
-                break;
-            case 2:
-                status = Status.EMPLOYEE;
-                break;
-            case 3:
-                status = Status.TEACHER;
-                break;
-            case 4:
-                status = Status.STUDENT;
-                break;
-            case 5:
-                status = Status.SENIOR;
-                break;
-            default:
-                status = Status.NONE;
-                break;
-        }
+
+        Status status = Status.values()[Integer.parseInt(bufferedReader.readLine()) - 1];
+
         RegisteredUser user = new RegisteredUser(username, password, status);
         users.add(user);
         currentUser = user;
@@ -467,81 +448,18 @@ public class Driver {
                     + "\n9. Rock" + "\n10. Pop"
                     + "\n11. Country" + "\n12. Latin" + "\n13. EDM" + "\n14. RNB" + "\n15. Classic"
                     + "\n16. Opera");
-        Genre eGenre;
-        switch (Integer.parseInt(bufferedReader.readLine())) {
-            case 1:
-                eGenre = Genre.COMEDY;
-                break;
-            case 2:
-                eGenre = Genre.HORROR;
-                break;
-            case 3:
-                eGenre = Genre.THRILLER;
-                break;
-            case 4:
-                eGenre = Genre.ROMANCE;
-                break;
-            case 5:
-                eGenre = Genre.INDIE;
-                break;
-            case 6:
-                eGenre = Genre.FAMILY;
-                break;
-            case 7:
-                eGenre = Genre.ACTION;
-                break;
-            case 8:
-                eGenre = Genre.RAP;
-                break;
-            case 9:
-                eGenre = Genre.ROCK;
-                break;
-            case 10:
-                eGenre = Genre.POP;
-                break;
-            case 11:
-                eGenre = Genre.COUNTRY;
-                break;
-            case 12:
-                eGenre = Genre.LATIN;
-                break;
-            case 13:
-                eGenre = Genre.EDM;
-                break;
-            case 14:
-                eGenre = Genre.RNB;
-                break;
-            case 15:
-                eGenre = Genre.CLASSIC;
-                break;
-            case 16:
-                eGenre = Genre.OPERA;
-                break;
-            default:
-                eGenre = Genre.NONE;
-                break;
-        }
+
+        Genre eGenre = Genre.values()[Integer.parseInt(bufferedReader.readLine()) - 1];
+
         System.out.println("Enter Description of event");
         String eDesc = bufferedReader.readLine();
         System.out.println("Is this event explicit? Enter 1(Yes) or 0(No)");
         boolean eExplicit = Integer.parseInt(bufferedReader.readLine()) == 1;
         System.out.println(
             "Choose an event type: " + "\n1. Movie" + "\n2. Concert" + "\n3. Play");
-        Type eType;
-        switch (Integer.parseInt(bufferedReader.readLine())) {
-            case 1:
-                eType = Type.MOVIE;
-                break;
-            case 2:
-                eType = Type.CONCERT;
-                break;
-            case 3:
-                eType = Type.PLAY;
-                break;
-            default:
-                eType = Type.NONE;
-                break;
-        }
+
+        Type eType = Type.values()[Integer.parseInt(bufferedReader.readLine())];
+
         System.out.println("Enter price of ticket $(##.##) JUST THE NUMBER");
         double ePrice = Double.parseDouble(bufferedReader.readLine());
 
@@ -660,17 +578,8 @@ public class Driver {
     private Type chooseType() throws IOException {
         System.out.println(
             "Choose an event type to filter by: " + "\n1. Movie" + "\n2. Concert" + "\n3. Play");
-        int option = Integer.parseInt(bufferedReader.readLine());
-        switch (option) {
-            case 1:
-                return Type.MOVIE;
-            case 2:
-                return Type.CONCERT;
-            case 3:
-                return Type.PLAY;
-            default:
-                return Type.NONE;
-        }
+
+        return Type.values()[Integer.parseInt(bufferedReader.readLine()) - 1];
     }
 
     /**
@@ -687,44 +596,8 @@ public class Driver {
                     + "\n9. Rock" + "\n10. Pop"
                     + "\n11. Country" + "\n12. Latin" + "\n13. EDM" + "\n14. RNB" + "\n15. Classic"
                     + "\n16. Opera");
-        int option = Integer.parseInt(bufferedReader.readLine());
-        switch (option) {
-            case 1:
-                return Genre.COMEDY;
-            case 2:
-                return Genre.HORROR;
-            case 3:
-                return Genre.THRILLER;
-            case 4:
-                return Genre.ROMANCE;
-            case 5:
-                return Genre.INDIE;
-            case 6:
-                return Genre.FAMILY;
-            case 7:
-                return Genre.ACTION;
-            case 8:
-                return Genre.RAP;
-            case 9:
-                return Genre.ROCK;
-            case 10:
-                return Genre.POP;
-            case 11:
-                return Genre.COUNTRY;
-            case 12:
-                return Genre.LATIN;
-            case 13:
-                return Genre.EDM;
-            case 14:
-                return Genre.RNB;
-            case 15:
-                return Genre.CLASSIC;
-            case 16:
-                return Genre.OPERA;
-            default:
-                return Genre.NONE;
-        }
 
+        return Genre.values()[Integer.parseInt(bufferedReader.readLine()) - 1];
     }
 
     /**
