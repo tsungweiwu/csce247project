@@ -9,7 +9,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class EventTest {
-	Event event;
+
+    Event event;
+
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
     }
@@ -20,7 +22,7 @@ class EventTest {
 
     @BeforeEach
     void setUp() throws Exception {
-    	event = new Event("00", "Name", Genre.ACTION, "movie", false, Type.MOVIE, 2.00);
+        event = new Event("00", "Name", Genre.ACTION, "movie", false, Type.MOVIE, 2.00);
     }
 
     @AfterEach
@@ -75,7 +77,7 @@ class EventTest {
 
     @Test
     void testSetTitle() {
-    	event.setTitle("Name2");
+        event.setTitle("Name2");
         assertEquals("Name2", event.getTitle());
     }
 

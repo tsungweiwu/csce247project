@@ -9,37 +9,39 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class RegisteredUserTest {
-	RegisteredUser ru;
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+    RegisteredUser ru;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		ru = new RegisteredUser("username", "password", Status.STUDENT);
-	}
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+    }
 
-	@Test
-	void testGetUsername() {
-		assertEquals("username", ru.getUsername());
-	}
+    @BeforeEach
+    void setUp() throws Exception {
+        ru = new RegisteredUser("username", "password", Status.STUDENT);
+    }
 
-	@Test
-	void testGetStatus() {
-		assertEquals(Status.STUDENT, ru.getStatus());
-	}
+    @AfterEach
+    void tearDown() throws Exception {
+    }
 
-	@Test
-	void testGetPassword() {
-		assertEquals("password", ru.getPassword());
-	}
+    @Test
+    void testGetUsername() {
+        assertEquals("username", ru.getUsername());
+    }
+
+    @Test
+    void testGetStatus() {
+        assertEquals(Status.STUDENT, ru.getStatus());
+    }
+
+    @Test
+    void testGetPassword() {
+        assertEquals("password", ru.getPassword());
+    }
 
 }

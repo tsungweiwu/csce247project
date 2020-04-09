@@ -46,6 +46,12 @@ class UserDatabaseTest {
     void tearDown() throws Exception {
     }
 
+    /**
+     * Did not include many of the functions because of how redundant it would be to insert into the
+     * JSON file and then remove it after testing it, especially when some of the functions require
+     * you to check multiple instances of inputs to insert into the JSON file
+     */
+
     @Test
     void testGetUsers() {
         assertNotNull(uDB.getUsers());

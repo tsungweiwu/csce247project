@@ -9,76 +9,78 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class VenueTest {
-	Venue venue;
-	Theater theater;
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+    Venue venue;
+    Theater theater;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		venue = new Venue("location", "name");
-		theater = new Theater(1, true);
-	}
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+    }
 
-	@Test
-	void testGetLocation() {
-		assertEquals("location", venue.getLocation());
-	}
+    @BeforeEach
+    void setUp() throws Exception {
+        venue = new Venue("location", "name");
+        theater = new Theater(1, true);
+    }
 
-	@Test
-	void testGetName() {
-		assertEquals("name", venue.getName());
-	}
+    @AfterEach
+    void tearDown() throws Exception {
+    }
 
-	@Test
-	void testSetLocation() {
-		venue.setLocation("nowhere");
-		assertEquals("nowhere", venue.getLocation());
-	}
+    @Test
+    void testGetLocation() {
+        assertEquals("location", venue.getLocation());
+    }
 
-	@Test
-	void testSetName() {
-		venue.setName("secondname");
-		assertEquals("secondname", venue.getName());
-	}
+    @Test
+    void testGetName() {
+        assertEquals("name", venue.getName());
+    }
 
-	@Test
-	void testContainsTheater() {
-		venue.addTheater(theater);
-		assertEquals(true, venue.containsTheater(theater));
-	}
+    @Test
+    void testSetLocation() {
+        venue.setLocation("nowhere");
+        assertEquals("nowhere", venue.getLocation());
+    }
 
-	@Test
-	void testFindTheater() {
-		venue.addTheater(theater);
-		assertEquals(theater, venue.findTheater(theater));
-	}
+    @Test
+    void testSetName() {
+        venue.setName("secondname");
+        assertEquals("secondname", venue.getName());
+    }
 
-	@Test
-	void testFindByRoom() {
-		venue.addTheater(theater);
-		assertEquals(theater, venue.findByRoom(1));
-	}
+    @Test
+    void testContainsTheater() {
+        venue.addTheater(theater);
+        assertEquals(true, venue.containsTheater(theater));
+    }
 
-	@Test
-	void testFindByHandicap() {
-		venue.addTheater(theater);
-		assertEquals(theater, venue.findByHandicap(true));
-	}
+    @Test
+    void testFindTheater() {
+        venue.addTheater(theater);
+        assertEquals(theater, venue.findTheater(theater));
+    }
 
-	@Test
-	void testEqualsObject() {
-		Venue temp = new Venue("location", "name");
-		assertEquals(true, venue.equals(temp));
-	}
+    @Test
+    void testFindByRoom() {
+        venue.addTheater(theater);
+        assertEquals(theater, venue.findByRoom(1));
+    }
+
+    @Test
+    void testFindByHandicap() {
+        venue.addTheater(theater);
+        assertEquals(theater, venue.findByHandicap(true));
+    }
+
+    @Test
+    void testEqualsObject() {
+        Venue temp = new Venue("location", "name");
+        assertEquals(true, venue.equals(temp));
+    }
 
 }

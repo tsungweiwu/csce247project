@@ -9,69 +9,71 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TheaterTest {
-	Theater theater;
-	Event event;
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+    Theater theater;
+    Event event;
 
-	@BeforeEach
-	void setUp() throws Exception {
-		theater = new Theater(1, true);
-		event = new Event("00", "Name", Genre.ACTION, "movie", false, Type.MOVIE, 2.00);
-	}
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+    }
 
-	@Test
-	void testGetRoom() {
-		assertEquals(1, theater.getRoom());
-	}
+    @BeforeEach
+    void setUp() throws Exception {
+        theater = new Theater(1, true);
+        event = new Event("00", "Name", Genre.ACTION, "movie", false, Type.MOVIE, 2.00);
+    }
 
-	@Test
-	void testIsHandicap() {
-		assertEquals(true, theater.isHandicap());
-	}
+    @AfterEach
+    void tearDown() throws Exception {
+    }
 
-	@Test
-	void testSetRoom() {
-		theater.setRoom(2);
-		assertEquals(2, theater.getRoom());
-	}
+    @Test
+    void testGetRoom() {
+        assertEquals(1, theater.getRoom());
+    }
 
-	@Test
-	void testSetHandicap() {
-		theater.setHandicap(false);
-		assertEquals(false, theater.isHandicap());
-	}
+    @Test
+    void testIsHandicap() {
+        assertEquals(true, theater.isHandicap());
+    }
 
-	@Test
-	void testContainsEvent() {
-		theater.addEvent(event);
-		assertEquals(true, theater.containsEvent(event));
-	}
+    @Test
+    void testSetRoom() {
+        theater.setRoom(2);
+        assertEquals(2, theater.getRoom());
+    }
 
-	@Test
-	void testAddEvent() {
-		testContainsEvent();
-	}
+    @Test
+    void testSetHandicap() {
+        theater.setHandicap(false);
+        assertEquals(false, theater.isHandicap());
+    }
 
-	@Test
-	void testEqualsObject() {
-		Theater temp = new Theater(1, true);
-		assertEquals(true, theater.equals(temp));
-	}
+    @Test
+    void testContainsEvent() {
+        theater.addEvent(event);
+        assertEquals(true, theater.containsEvent(event));
+    }
 
-	@Test
-	void testFindEvent() {
-		theater.addEvent(event);
-		assertEquals(event, theater.findEvent(event));
-	}
+    @Test
+    void testAddEvent() {
+        testContainsEvent();
+    }
+
+    @Test
+    void testEqualsObject() {
+        Theater temp = new Theater(1, true);
+        assertEquals(true, theater.equals(temp));
+    }
+
+    @Test
+    void testFindEvent() {
+        theater.addEvent(event);
+        assertEquals(event, theater.findEvent(event));
+    }
 
 }

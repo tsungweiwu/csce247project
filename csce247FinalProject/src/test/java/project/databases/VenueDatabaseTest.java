@@ -44,6 +44,12 @@ class VenueDatabaseTest {
     void tearDown() throws Exception {
     }
 
+    /**
+     * Did not include many of the functions because of how redundant it would be to insert into the
+     * JSON file and then remove it after testing it, especially when some of the functions require
+     * you to check multiple instances of inputs to insert into the JSON file
+     */
+
     @Test
     void testGetVenues() {
         assertNotNull(vDB.getVenues());
@@ -87,7 +93,7 @@ class VenueDatabaseTest {
 
     @Test
     void testDiscountPercent85() {
-        assertEquals(85, vDB.discountPercent(Status.MILITARY));
+        assertEquals(0.85, vDB.discountPercent(Status.MILITARY));
     }
 
     @Test
