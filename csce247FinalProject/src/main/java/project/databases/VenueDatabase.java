@@ -118,36 +118,6 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
     }
 
     /**
-     * Searches Venue by venue name
-     *
-     * @param name
-     * @return venue
-     */
-    public Venue findByName(String name) {
-        for (Venue venue : getVenues()) {
-            if (venue.getName().equalsIgnoreCase(name)) {
-                return venue;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Searches Venue by venue location
-     *
-     * @param location
-     * @return venue
-     */
-    public Venue findByLocation(String location) {
-        for (Venue venue : getVenues()) {
-            if (venue.getLocation().equalsIgnoreCase(location)) {
-                return venue;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Searches for the event info by the title and prints it all out
      *
      * @param title
@@ -259,44 +229,6 @@ public class VenueDatabase extends DataManager implements Database<Venue> {
                 for (Event event : theater.getEvents()) {
                     if (event.getTitle().equalsIgnoreCase(title)) {
                         return event;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Searches for the event by title and retrieves all the related data and returns the theater
-     *
-     * @param title
-     * @return theater
-     */
-    public Theater getTheater(String title) {
-        for (Venue venue : getVenues()) {
-            for (Theater theater : venue.getTheaters()) {
-                for (Event event : theater.getEvents()) {
-                    if (event.getTitle().equalsIgnoreCase(title)) {
-                        return theater;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Searches for the event by title and retrieves all the related data and returns the venue
-     *
-     * @param title
-     * @return venue
-     */
-    public Venue getVenue(String title) {
-        for (Venue venue : getVenues()) {
-            for (Theater theater : venue.getTheaters()) {
-                for (Event event : theater.getEvents()) {
-                    if (event.getTitle().equalsIgnoreCase(title)) {
-                        return venue;
                     }
                 }
             }

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class AdminTest {
+	
+	Admin admin;
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -20,6 +22,7 @@ class AdminTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		admin = new Admin("username", "password");
 	}
 
 	@AfterEach
@@ -28,23 +31,21 @@ class AdminTest {
 
 	@Test
 	void testGetUsername() {
-		Admin admin = new Admin("username", "password");
-        assertEquals("username", admin.getUsername());
-	}
-
-	@Test
-	void testAdmin() {
-		fail("Not yet implemented");
+        assertEquals("username", admin.getUsername(), "Username should be username");
 	}
 
 	@Test
 	void testGetPassword() {
-		fail("Not yet implemented");
+		assertEquals("password", admin.getPassword(), "Password should be password");
 	}
 
+	/**
+	 * Tests if newly assigned password matches
+	 */
 	@Test
 	void testSetPassword() {
-		fail("Not yet implemented");
+		admin.setPassword("newPassword");
+		assertEquals("newPassword", admin.getPassword(), "Password updated to newPassword");
 	}
 
 }

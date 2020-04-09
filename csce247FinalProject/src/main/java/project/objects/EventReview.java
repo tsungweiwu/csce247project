@@ -5,7 +5,16 @@ import java.util.LinkedList;
 public class EventReview {
 
     private String title;
-    private LinkedList<Review> reviews = new LinkedList<>();
+    private LinkedList<Review> reviews;
+
+    public EventReview() {
+        reviews = new LinkedList<>();
+    }
+
+    public EventReview(String title) {
+        this.setTitle(title);
+        reviews = new LinkedList<>();
+    }
 
     /**
      * Getters

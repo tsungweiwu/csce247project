@@ -1,8 +1,0 @@
-*************************************************
-Venue Name: PlaysRUs
-Location: 1800 Senate St, Columbia, South Carolina
-Room: 3 - Seat: A0
-Title: The Purge: Independence Day
-Date: July 14, 2020 10:30 AM
-Price: $10.0
-*************************************************

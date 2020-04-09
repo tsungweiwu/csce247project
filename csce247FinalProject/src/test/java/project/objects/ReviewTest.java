@@ -10,45 +10,40 @@ import org.junit.jupiter.api.Test;
 
 class ReviewTest {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+    }
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
+    @BeforeEach
+    void setUp() throws Exception {
+    }
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+    @AfterEach
+    void tearDown() throws Exception {
+    }
 
-	@Test
-	void testReview() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetRating() {
+        fail("Not yet implemented");
+    }
 
-	@Test
-	void testGetRating() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetReview() {
+        fail("Not yet implemented");
+    }
 
-	@Test
-	void testGetReview() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testSetRating() {
+        fail("Not yet implemented");
+    }
 
-	@Test
-	void testSetRating() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetReview() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testSetReview() {
+        fail("Not yet implemented");
+    }
 
 }

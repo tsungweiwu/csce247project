@@ -91,34 +91,6 @@ public class UserDatabase extends DataManager implements Database<User> {
         return false;
     }
 
-    public User get(String username) {
-        for (RegisteredUser user : getUsers()) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        for (Admin user : getAdmins()) {
-            if (user.getUsername().equals(username)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    public boolean hasUser(String username) {
-        for (RegisteredUser user : getUsers()) {
-            if (user.getUsername().equals(username)) {
-                return true;
-            }
-        }
-        for (Admin user : getAdmins()) {
-            if (user.getUsername().equals(username)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Loads the users from the JSON File and into the program
      */

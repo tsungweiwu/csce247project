@@ -2,63 +2,73 @@ package project.databases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import project.objects.EventReview;
+import project.objects.Event;
+import project.objects.Genre;
+import project.objects.Review;
+import project.objects.Type;
+
+/**
+ * These are the main functions in the databases, the other ones are not implemented with test cases
+ * because they only write to JSON files, and we should check the data before it is even written
+ * into these JSON files. The JSON writing and reading are checked by exceptions already.
+ */
 class ReviewDatabaseTest {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+    ReviewDatabase rDB = new ReviewDatabase();
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+    }
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+    @BeforeEach
+    void setUp() throws Exception {
 
-	@Test
-	void testReviewDatabase() {
-		fail("Not yet implemented");
-	}
+    }
 
-	@Test
-	void testGetEventReviews() {
-		fail("Not yet implemented");
-	}
+    @AfterEach
+    void tearDown() throws Exception {
+    }
 
-	@Test
-	void testSetEventReviews() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetEventReviews() {
+        assertNotNull(rDB.getEventReviews());
+    }
 
-	@Test
-	void testWriteReview() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testSetEventReviews() {
+        HashSet<EventReview> eventReviews = new HashSet<>();
+        eventReviews.add(new EventReview("title"));
 
-	@Test
-	void testFindEventReview() {
-		fail("Not yet implemented");
-	}
+        rDB.setEventReviews(eventReviews);
+        assertNotNull(rDB.getEventReviews());
+    }
 
-	@Test
-	void testLoadReviews() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testLoadReviews() {
+        rDB.loadReviews();
+        assertNotNull(rDB);
+    }
 
-	@Test
-	void testSaveReviews() {
-		fail("Not yet implemented");
-	}
-
+    /**
+     * Passes in event object and checks if it returns all reviews with the same title
+     */
+    @Test
+    void testFindEventReview() {
+        Event e = new Event("", "Alladin", Genre.FAMILY, "", false, Type.MOVIE, 5.00);
+        assertEquals("Alladin", rDB.findEventReview(e).getTitle());
+    }
 }

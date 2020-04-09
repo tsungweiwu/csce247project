@@ -28,6 +28,21 @@ dependencies {
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:28.0-jre'
 
-   
-    testImplementation('org.junit.jupiter:junit-jupiter:5.6.1')
+    def junit4Version   = '4.13'
+	def junitBomVersion = '5.6.1'
+
+	testImplementation(platform("org.junit:junit-bom:$junitBomVersion"))
+
+	// JUnit Jupiter API and TestEngine implementation
+	testImplementation("org.junit.jupiter:junit-jupiter")
+
+	testImplementation("junit:junit:${junit4Version}")
+	testRuntimeOnly("org.junit.vintage:junit-vintage-engine") {
+		because 'allows JUnit 3 and JUnit 4 tests to run'
+	}
+
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher") {
+		because 'allows tests to run from IDEs that bundle older version of launcher'
+	}
 }
+

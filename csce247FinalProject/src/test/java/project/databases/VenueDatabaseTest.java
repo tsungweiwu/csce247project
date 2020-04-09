@@ -1,260 +1,109 @@
 /**
- * 
+ *
  */
 package project.databases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import project.objects.Status;
+import project.objects.Venue;
 
 class VenueDatabaseTest {
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+    VenueDatabase vDB;
+    ReviewDatabase rDB;
+    ArrayList<Venue> venues = new ArrayList<>();
+    Venue venue;
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@BeforeEach
-	void setUp() throws Exception {
-	}
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+    }
 
-	/**
-	 * @throws java.lang.Exception
-	 */
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+    @BeforeEach
+    void setUp() throws Exception {
+        rDB = new ReviewDatabase();
+        rDB.loadReviews();
+        vDB = new VenueDatabase(rDB);
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#VenueDatabase(project.databases.ReviewDatabase)}.
-	 */
-	@Test
-	void testVenueDatabase() {
-		fail("Not yet implemented");
-	}
+        venue = new Venue("location", "name");
+        venues = vDB.getVenues();
+        venues.add(venue);
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#getVenues()}.
-	 */
-	@Test
-	void testGetVenues() {
-		fail("Not yet implemented");
-	}
+    @AfterEach
+    void tearDown() throws Exception {
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#setVenues(java.util.ArrayList)}.
-	 */
-	@Test
-	void testSetVenues() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetVenues() {
+        assertNotNull(vDB.getVenues());
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#add(project.objects.Venue)}.
-	 */
-	@Test
-	void testAdd() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testSetVenues() {
+        vDB.setVenues(venues);
+        testGetVenues();
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#remove(project.objects.Venue)}.
-	 */
-	@Test
-	void testRemove() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testFindVenue() {
+        assertEquals(venue, vDB.findVenue(venue));
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#findVenue(project.objects.Venue)}.
-	 */
-	@Test
-	void testFindVenue() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testContainsVenue() {
+        assertTrue(vDB.containsVenue(venue));
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#containsVenue(project.objects.Venue)}.
-	 */
-	@Test
-	void testContainsVenue() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetCeil() {
+        assertEquals(5, vDB.getCeil(4));
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#findByName(java.lang.String)}.
-	 */
-	@Test
-	void testFindByName() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetCeilRoundUp() {
+        assertEquals(5, vDB.getCeil(4.5));
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#findByLocation(java.lang.String)}.
-	 */
-	@Test
-	void testFindByLocation() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetEvent() {
+        assertEquals("Frozen 2", vDB.getEvent("Frozen 2").getTitle());
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#search(java.lang.String)}.
-	 */
-	@Test
-	void testSearch() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testDiscountPercent92() {
+        assertEquals(0.92, vDB.discountPercent(Status.STUDENT));
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#filterByGenre(project.objects.Genre)}.
-	 */
-	@Test
-	void testFilterByGenre() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testDiscountPercent85() {
+        assertEquals(85, vDB.discountPercent(Status.MILITARY));
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#filterByVenue(java.lang.String)}.
-	 */
-	@Test
-	void testFilterByVenue() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testDiscountPercent90() {
+        assertEquals(0.90, vDB.discountPercent(Status.TEACHER));
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#filterByRating(double)}.
-	 */
-	@Test
-	void testFilterByRating() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testDiscountPercentNone() {
+        assertEquals(1, vDB.discountPercent(Status.NONE));
+    }
 
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#filterByEventType(project.objects.Type)}.
-	 */
-	@Test
-	void testFilterByEventType() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#getCeil(double)}.
-	 */
-	@Test
-	void testGetCeil() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#getEvent(java.lang.String)}.
-	 */
-	@Test
-	void testGetEvent() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#getTheater(java.lang.String)}.
-	 */
-	@Test
-	void testGetTheater() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#getVenue(java.lang.String)}.
-	 */
-	@Test
-	void testGetVenue() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#printFormat(project.objects.Venue, project.objects.Theater, project.objects.Event)}.
-	 */
-	@Test
-	void testPrintFormat() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#printTicket(project.objects.Venue, project.objects.Theater, project.objects.Event, int)}.
-	 */
-	@Test
-	void testPrintTicketVenueTheaterEventInt() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#printTicket(project.objects.Venue, project.objects.Theater, project.objects.Event, project.objects.Status, int)}.
-	 */
-	@Test
-	void testPrintTicketVenueTheaterEventStatusInt() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#printReceipt(project.objects.Venue, project.objects.Theater, project.objects.Event, char[], java.util.LinkedList)}.
-	 */
-	@Test
-	void testPrintReceiptVenueTheaterEventCharArrayLinkedListOfInteger() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#printReceipt(project.objects.Venue, project.objects.Theater, project.objects.Event, char[], java.util.LinkedList, project.objects.Status)}.
-	 */
-	@Test
-	void testPrintReceiptVenueTheaterEventCharArrayLinkedListOfIntegerStatus() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#discountPercent(project.objects.Status)}.
-	 */
-	@Test
-	void testDiscountPercent() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#printAll()}.
-	 */
-	@Test
-	void testPrintAll() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#loadVenues()}.
-	 */
-	@Test
-	void testLoadVenues() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link project.databases.VenueDatabase#saveVenues()}.
-	 */
-	@Test
-	void testSaveVenues() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testLoadVenues() {
+        vDB.loadVenues();
+        assertNotNull(vDB);
+    }
 
 }

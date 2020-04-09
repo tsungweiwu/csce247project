@@ -2,118 +2,95 @@ package project.databases;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.HashSet;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import project.objects.Admin;
+import project.objects.RegisteredUser;
+import project.objects.Status;
 
+/**
+ * These are the main functions in the databases, the other ones are not implemented with test cases
+ * because they only write to JSON files, and we should check the data before it is even written
+ * into these JSON files. The JSON writing and reading are checked by exceptions already.
+ */
 class UserDatabaseTest {
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
+    UserDatabase uDB;
+    HashSet<RegisteredUser> users = new HashSet<>();
+    HashSet<Admin> admins = new HashSet<>();
 
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
+    @BeforeAll
+    static void setUpBeforeClass() throws Exception {
+    }
 
-	@BeforeEach
-	void setUp() throws Exception {
-	}
+    @AfterAll
+    static void tearDownAfterClass() throws Exception {
+    }
 
-	@AfterEach
-	void tearDown() throws Exception {
-	}
+    @BeforeEach
+    void setUp() throws Exception {
+        uDB = new UserDatabase();
 
-	@Test
-	void testUserDatabase() {
-		fail("Not yet implemented");
-	}
+        users = uDB.getUsers();
+        admins = uDB.getAdmins();
 
-	@Test
-	void testGetUsers() {
-		fail("Not yet implemented");
-	}
+        users.add(new RegisteredUser("testUser", "password", Status.NONE));
+        admins.add(new Admin("testAdmin", "password"));
+    }
 
-	@Test
-	void testGetAdmins() {
-		fail("Not yet implemented");
-	}
+    @AfterEach
+    void tearDown() throws Exception {
+    }
 
-	@Test
-	void testSetUsers() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetUsers() {
+        assertNotNull(uDB.getUsers());
+    }
 
-	@Test
-	void testSetAdmin() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetAdmins() {
+        assertNotNull(uDB.getAdmins());
+    }
 
-	@Test
-	void testAddUser() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testSetUsers() {
+        uDB.setUsers(users);
+        testGetUsers();
+    }
 
-	@Test
-	void testAddAdmin() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testSetAdmin() {
+        uDB.setAdmin(admins);
+        testGetAdmins();
+    }
 
-	@Test
-	void testAdd() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testLoginUser() {
+        assertTrue(uDB.login("testUser", "password", users, RegisteredUser.class));
+    }
 
-	@Test
-	void testRemove() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testLoginFailUser() {
+        assertFalse(uDB.login("NonExistingUser", "WrongPassword", users, RegisteredUser.class));
+    }
 
-	@Test
-	void testGet() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testLoginAdmin() {
+        assertTrue(uDB.login("testAdmin", "password", admins, Admin.class));
+    }
 
-	@Test
-	void testHasUser() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testGetUser() {
+        assertNotNull(uDB.getUser("testUser", users));
+    }
 
-	@Test
-	void testLoadUsers() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testLoadAdmins() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testLogin() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetUser() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testIsUser() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSaveUsers() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSaveAdmins() {
-		fail("Not yet implemented");
-	}
+    @Test
+    void testIsUser() {
+        assertTrue(uDB.isUser("testUser", users));
+    }
 
 }
