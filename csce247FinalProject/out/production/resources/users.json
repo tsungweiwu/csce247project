@@ -1,0 +1,34 @@
+[
+  {
+    "status": "STUDENT",
+    "password": "1234",
+    "tickets": [
+      "\n*************************************************\nVenue Name: AMC\nLocation: 112 Wayne St, Columbia, South Carolina\nRoom: 2 - Seat: A5\nTitle: The Jungle Book\nDate: April 20, 2020 2:20 PM\nPrice: $11.96\n*************************************************\n"
+    ],
+    "username": "ipejuan"
+  },
+  {
+    "status": "SENIOR",
+    "password": "test",
+    "tickets": [],
+    "username": "test"
+  },
+  {
+    "status": "EMPLOYEE",
+    "password": "user",
+    "tickets": [
+      "*************************************************\nVenue Name: AMC\nLocation: 112 Wayne St, Columbia, South Carolina\nRoom: 2 - Seat: C9\nTitle: The Joker\nDate: August 23, 2020 7:45 PM\nPrice: $14.25\n*************************************************\n",
+      "*************************************************\nVenue Name: AMC\nLocation: 112 Wayn St, Columbia, South Carolina\nRoom: 2 - Seat: A1\nTitle: The Joker\nDate: August 23, 2020 8:45 PM\nPrice: $12.11\n*************************************************\n"
+    ],
+    "username": "user"
+  },
+  {
+    "status": "STUDENT",
+    "password": "password",
+    "tickets": [
+      "\n*************************************************\nVenue Name: AMC\nLocation: 112 Wayn St, Columbia, South Carolina\nRoom: 2 - Seat: C6\nTitle: The Joker\nDate: August 23, 2020 8:45 PM\nPrice: $13.11\n*************************************************\n\n*************************************************\nVenue Name: AMC\nLocation: 112 Wayn St, Columbia, South Carolina\nRoom: 2 - Seat: C4\nTitle: The Joker\nDate: August 23, 2020 8:45 PM\nPrice: $13.11\n*************************************************\n",
+      "\n*************************************************\nVenue Name: AMC\nLocation: 112 Wayne St, Columbia, South Carolina\nRoom: 4 - Seat: A0\nTitle: The Joker\nDate: August 23, 2020 7:45 PM\nPrice: $13.11\n*************************************************\n\n*************************************************\nVenue Name: AMC\nLocation: 112 Wayne St, Columbia, South Carolina\nRoom: 4 - Seat: A1\nTitle: The Joker\nDate: August 23, 2020 7:45 PM\nPrice: $13.11\n*************************************************\n\n*************************************************\nVenue Name: AMC\nLocation: 112 Wayne St, Columbia, South Carolina\nRoom: 4 - Seat: A3\nTitle: The Joker\nDate: August 23, 2020 7:45 PM\nPrice: $13.11\n*************************************************\n"
+    ],
+    "username": "edison"
+  }
+]
