@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class EventTest {
-
+	Event event;
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
     }
@@ -20,6 +20,7 @@ class EventTest {
 
     @BeforeEach
     void setUp() throws Exception {
+    	event = new Event("00", "Name", Genre.ACTION, "movie", false, Type.MOVIE, 2.00);
     }
 
     @AfterEach
@@ -28,92 +29,90 @@ class EventTest {
 
     @Test
     void testGetDate() {
-        fail("Not yet implemented");
+        assertEquals("00", event.getDate());
     }
 
     @Test
     void testGetTitle() {
-        fail("Not yet implemented");
+        assertEquals("Name", event.getTitle());
     }
 
     @Test
     void testGetGenre() {
-        fail("Not yet implemented");
+        assertEquals(Genre.ACTION, event.getGenre());
     }
 
     @Test
     void testGetDescription() {
-        fail("Not yet implemented");
+        assertEquals("movie", event.getDescription());
     }
 
     @Test
     void testIsExplicit() {
-        fail("Not yet implemented");
+        assertEquals(false, event.isExplicit());
     }
 
     @Test
     void testGetType() {
-        fail("Not yet implemented");
+        assertEquals(Type.MOVIE, event.getType());
     }
 
     @Test
     void testGetPrice() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    void testGetSeats() {
-        fail("Not yet implemented");
+        assertEquals(2.00, event.getPrice());
     }
 
     @Test
     void testGetAvailable() {
-        fail("Not yet implemented");
+        assertEquals(100, event.getAvailable());
     }
 
     @Test
     void testSetDate() {
-        fail("Not yet implemented");
+        event.setDate("11");
+        assertEquals("11", event.getDate());
     }
 
     @Test
     void testSetTitle() {
-        fail("Not yet implemented");
+    	event.setTitle("Name2");
+        assertEquals("Name2", event.getTitle());
     }
 
     @Test
     void testSetGenre() {
-        fail("Not yet implemented");
+        event.setGenre(Genre.CLASSIC);
+        assertEquals(Genre.CLASSIC, event.getGenre());
     }
 
     @Test
     void testSetDescription() {
-        fail("Not yet implemented");
+        event.setDescription("second des");
+        assertEquals("second des", event.getDescription());
     }
 
     @Test
     void testSetExplicit() {
-        fail("Not yet implemented");
+        event.setExplicit(true);
+        assertEquals(true, event.isExplicit());
     }
 
     @Test
     void testSetType() {
-        fail("Not yet implemented");
+        event.setType(Type.CONCERT);
+        assertEquals(Type.CONCERT, event.getType());
     }
 
     @Test
     void testSetPrice() {
-        fail("Not yet implemented");
-    }
-
-    @Test
-    void testSetSeats() {
-        fail("Not yet implemented");
+        event.setPrice(3.00);
+        assertEquals(3.00, event.getPrice());
     }
 
     @Test
     void testEqualsObject() {
-        fail("Not yet implemented");
+        Event temp = new Event("00", "Name", Genre.ACTION, "movie", false, Type.MOVIE, 2.00);
+        assertEquals(true, event.equals(temp));
     }
 
 }

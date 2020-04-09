@@ -9,7 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class ReviewTest {
-
+	Review review;
+	
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
     }
@@ -20,6 +21,7 @@ class ReviewTest {
 
     @BeforeEach
     void setUp() throws Exception {
+    	review = new Review(3, "good");
     }
 
     @AfterEach
@@ -28,22 +30,24 @@ class ReviewTest {
 
     @Test
     void testGetRating() {
-        fail("Not yet implemented");
+        assertEquals(3, review.getRating());
     }
 
     @Test
     void testGetReview() {
-        fail("Not yet implemented");
+        assertEquals("good", review.getReview());
     }
 
     @Test
     void testSetRating() {
-        fail("Not yet implemented");
+        review.setRating(4);
+        assertEquals(4, review.getRating());
     }
 
     @Test
     void testSetReview() {
-        fail("Not yet implemented");
+        review.setReview("better");
+        assertEquals("better", review.getReview());
     }
 
 }

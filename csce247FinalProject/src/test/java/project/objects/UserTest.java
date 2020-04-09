@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class UserTest {
-
+	User user;
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
@@ -20,6 +20,7 @@ class UserTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		user = new User("username");
 	}
 
 	@AfterEach
@@ -27,18 +28,14 @@ class UserTest {
 	}
 
 	@Test
-	void testUser() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	void testGetUsername() {
-		fail("Not yet implemented");
+		assertEquals("username", user.getUsername());
 	}
 
 	@Test
 	void testSetUsername() {
-		fail("Not yet implemented");
+		user.setUsername("default");
+		assertEquals("default", user.getUsername());
 	}
 
 }

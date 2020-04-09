@@ -9,7 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class TheaterTest {
-
+	Theater theater;
+	Event event;
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
@@ -20,6 +21,8 @@ class TheaterTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		theater = new Theater(1, true);
+		event = new Event("00", "Name", Genre.ACTION, "movie", false, Type.MOVIE, 2.00);
 	}
 
 	@AfterEach
@@ -27,58 +30,48 @@ class TheaterTest {
 	}
 
 	@Test
-	void testTheater() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	void testGetRoom() {
-		fail("Not yet implemented");
+		assertEquals(1, theater.getRoom());
 	}
 
 	@Test
 	void testIsHandicap() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetEvents() {
-		fail("Not yet implemented");
+		assertEquals(true, theater.isHandicap());
 	}
 
 	@Test
 	void testSetRoom() {
-		fail("Not yet implemented");
+		theater.setRoom(2);
+		assertEquals(2, theater.getRoom());
 	}
 
 	@Test
 	void testSetHandicap() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetEvents() {
-		fail("Not yet implemented");
+		theater.setHandicap(false);
+		assertEquals(false, theater.isHandicap());
 	}
 
 	@Test
 	void testContainsEvent() {
-		fail("Not yet implemented");
+		theater.addEvent(event);
+		assertEquals(true, theater.containsEvent(event));
 	}
 
 	@Test
 	void testAddEvent() {
-		fail("Not yet implemented");
+		testContainsEvent();
 	}
 
 	@Test
 	void testEqualsObject() {
-		fail("Not yet implemented");
+		Theater temp = new Theater(1, true);
+		assertEquals(true, theater.equals(temp));
 	}
 
 	@Test
 	void testFindEvent() {
-		fail("Not yet implemented");
+		theater.addEvent(event);
+		assertEquals(event, theater.findEvent(event));
 	}
 
 }

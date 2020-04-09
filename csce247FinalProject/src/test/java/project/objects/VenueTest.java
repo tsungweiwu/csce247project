@@ -9,7 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class VenueTest {
-
+	Venue venue;
+	Theater theater;
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 	}
@@ -20,6 +21,8 @@ class VenueTest {
 
 	@BeforeEach
 	void setUp() throws Exception {
+		venue = new Venue("location", "name");
+		theater = new Theater(1, true);
 	}
 
 	@AfterEach
@@ -27,68 +30,55 @@ class VenueTest {
 	}
 
 	@Test
-	void testVenue() {
-		fail("Not yet implemented");
-	}
-
-	@Test
 	void testGetLocation() {
-		fail("Not yet implemented");
+		assertEquals("location", venue.getLocation());
 	}
 
 	@Test
 	void testGetName() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testGetTheaters() {
-		fail("Not yet implemented");
+		assertEquals("name", venue.getName());
 	}
 
 	@Test
 	void testSetLocation() {
-		fail("Not yet implemented");
+		venue.setLocation("nowhere");
+		assertEquals("nowhere", venue.getLocation());
 	}
 
 	@Test
 	void testSetName() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testSetTheaters() {
-		fail("Not yet implemented");
-	}
-
-	@Test
-	void testAddTheater() {
-		fail("Not yet implemented");
+		venue.setName("secondname");
+		assertEquals("secondname", venue.getName());
 	}
 
 	@Test
 	void testContainsTheater() {
-		fail("Not yet implemented");
+		venue.addTheater(theater);
+		assertEquals(true, venue.containsTheater(theater));
 	}
 
 	@Test
 	void testFindTheater() {
-		fail("Not yet implemented");
+		venue.addTheater(theater);
+		assertEquals(theater, venue.findTheater(theater));
 	}
 
 	@Test
 	void testFindByRoom() {
-		fail("Not yet implemented");
+		venue.addTheater(theater);
+		assertEquals(theater, venue.findByRoom(1));
 	}
 
 	@Test
 	void testFindByHandicap() {
-		fail("Not yet implemented");
+		venue.addTheater(theater);
+		assertEquals(theater, venue.findByHandicap(true));
 	}
 
 	@Test
 	void testEqualsObject() {
-		fail("Not yet implemented");
+		Venue temp = new Venue("location", "name");
+		assertEquals(true, venue.equals(temp));
 	}
 
 }
